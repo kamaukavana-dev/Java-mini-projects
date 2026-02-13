@@ -1,4 +1,4 @@
-public class New {
+public class vowelCounter {
     public static void main(String[] args) {
         String greeting = "Hello World";
         int vowelCount = 0;

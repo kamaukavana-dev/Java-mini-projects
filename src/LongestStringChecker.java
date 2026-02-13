@@ -1,4 +1,4 @@
-public class array {
+public class LongestStringChecker {
     public static void main(String[] args) {
         String[] fruits = {"apple", "banana", "kiwi", "strawberry", "pear"};
 
