@@ -6,7 +6,7 @@ public class LongestStringChecker {
 
         for (String fruit : fruits) {
             if (fruit.length() > longest.length()) {
-                longest = fruit; // update longest if current fruit is longer
+                longest = fruit; // updates longest if current fruit is longer
             }
         }
 

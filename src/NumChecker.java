@@ -35,7 +35,7 @@ public class NumChecker {
         float average;
 
         // Fill array with user input
-        System.out.println("Enter " + size + " numbers:");
+        System.out.println("Enter " + size + " numbers: ");
         for (int i = 0; i < size; i++) {
             arr[i] = scanner.nextInt();
             sum = sum + arr[i];

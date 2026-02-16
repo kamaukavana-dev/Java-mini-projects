@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class guessingGame {
     public static void main(String[] args) {
@@ -14,8 +15,8 @@ public class guessingGame {
                     4) NO REFUND UPON LOSS.
                     5) GOOD LUCK.....
                     """);
-
-            int lucky_num = (int)(Math.random() * 20) + 1; // random number 1–20
+            Random random = new Random();
+            int lucky_num = random.nextInt(20) + 1;
             int tries = 3;
 
             while (tries > 0) {
