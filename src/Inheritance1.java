@@ -1,0 +1,2 @@
+public class Inheritance1 {
+}
