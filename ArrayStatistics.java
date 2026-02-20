@@ -4,7 +4,7 @@ public class ArrayStatistics {
         int max = myArray[0];
         int min = myArray[0];
         int sum = 0;
-        int average;
+        double average;
         for(int array : myArray){
             if(array > max){
                 max = array;
@@ -19,9 +19,8 @@ public class ArrayStatistics {
         }
         System.out.println("The largest number is :"+ max );
         System.out.println("The smallest number is :"+ min);
-        average = sum/myArray.length;
-        double ave = average;
+        average = (double) sum/myArray.length;
         System.out.println("The sum of all the numbers is :"+ sum);
-        System.out.println("The average of all the numbers is :"+ ave);
+        System.out.println("The average of all the numbers is :"+ average);
     }
 }

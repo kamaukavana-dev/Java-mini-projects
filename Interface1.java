@@ -21,9 +21,7 @@ class Lion implements Animal{
 }
 class Cat implements Animal{
     @Override
-    public void move() {
-        System.out.println("The Cat moves on four limbs.");
-    }
+    public void move(){System.out.println("The Cat moves on four limbs.");}
 
     @Override
     public void sound() {
@@ -53,7 +51,7 @@ class Eagle implements Animal{
 }
 public class Interface1 {
     public static void main(String[] args) {
-        Animal l1 = new Lion();
+        Animal l1 = new Lion(); //polimerphism
         Animal c1 = new Cat();
         Animal e1 = new Eagle();
         e1.eat();

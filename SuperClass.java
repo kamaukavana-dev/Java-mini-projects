@@ -2,7 +2,7 @@ class Vehicles {
     String brand;
     String name;
     int cost;
-
+      //constructor
     Vehicles(String brand, String name, int cost) {
         this.brand = brand;
         this.name = name;
@@ -18,7 +18,7 @@ class Vehicles {
 
 class Cars extends Vehicles {
     String model;
-
+     //constructor
     Cars(String brand, String name, int cost, String model) {
         super(brand, name, cost);
         this.model = model;
@@ -31,6 +31,7 @@ class Cars extends Vehicles {
 }
 class Truck extends Vehicles{
     String type;
+    //constructor
     Truck(String brand,String name, int cost, String type) {
         super(brand,name, cost);
         this.type= type;
@@ -53,7 +54,7 @@ public class SuperClass {
         Cars c = new Cars("Ford", "Ranger", 12000000, "Hilux");
         Truck t = new Truck("Transist","Truck",19450000,"heavy");
 
-        System.out.printf("%s %s worth $%,d is a %s model.%n", c.brand, c.name, c.cost, c.model);
+        System.out.printf("%s %s worth $%,d is a %s model.%n   \n", c.brand, c.name, c.cost, c.model);
         t.info();
         c.detail();
         t.detail();

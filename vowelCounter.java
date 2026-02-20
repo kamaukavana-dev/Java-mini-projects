@@ -1,6 +1,6 @@
 public class vowelCounter {
     public static void main(String[] args) {
-        String greeting = "Hello World";
+        String greeting = "Hello  christopher";
         int vowelCount = 0;
 
         for (int i = 0; i < greeting.length(); i++) {

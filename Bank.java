@@ -5,14 +5,14 @@ class BankAccount {
     private int balance;
     private final String accountName;
     private final int password;
-
+              //constructor
     BankAccount(int accountNumber, int balance, String accountName, int password) {
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.accountName = accountName;
         this.password = password;
     }
-
+      //getters and setters
     public int getAccountNumber() {
         return accountNumber;
     }
@@ -78,7 +78,7 @@ public class Bank {
             activeAccount = account2;
         } else {
             System.out.println("Login failed! Wrong credentials.");
-            System.exit(0);
+            System.exit(0); //to exit the whole program forcefully   return statements only exit current method
         }
 
         System.out.println("""
