@@ -1,6 +1,6 @@
 public class Methods {
     static boolean isEven(int a){
-        return a % 2 == 0;
+        return a % 2 == 0;//just a short form instead of using if else statements
     }
 
     public static void main(String[] args){

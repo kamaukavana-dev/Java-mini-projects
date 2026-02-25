@@ -5,8 +5,8 @@ public class FileInput {
     public static void main(String[] args) throws IOException {
         try(FileInputStream file = new FileInputStream("/home/kavana-daniel/Pictures/16674_61.jpg");
             FileOutputStream fileOut = new FileOutputStream("new.jpg")){//copy to new.jpg
-            int c;
-            while(((c = file.read()) != -1)){
+            int c;//store each byte in c
+            while((c = file.read()) != -1){
                 fileOut.write(c);//write the raw byte to new file
             }
             System.out.println("File written successfully.");

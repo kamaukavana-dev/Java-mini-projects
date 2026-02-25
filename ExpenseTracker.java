@@ -9,7 +9,7 @@ public class ExpenseTracker {
         int choice;
 
         do {
-            System.out.println("\n=== Expense Tracker ===");
+            System.out.println("\n  🎰🎰 EXPENSE TRACKER 🎰🎰  \n");
             System.out.println("1. Add Expense");
             System.out.println("2. View Expenses");
             System.out.println("3. Calculate Total");
@@ -30,7 +30,7 @@ public class ExpenseTracker {
                 case 4 -> System.out.println("Goodbye!");
                 default -> System.out.println("Invalid choice. Try again.");
             }
-        } while (choice != 4);
+        } while (choice <= 4);
 
         scanner.close();
     }
@@ -64,7 +64,7 @@ public class ExpenseTracker {
     private static void viewExpenses() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
-            System.out.println("\n--- Expenses ---");
+            System.out.println("\n  🎰🎰 EXPENSE TRACKER 🎰🎰  \n");
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
