@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Iterator;
+
 public class ArrayList1 {
     public static void main(String[] args) {
         ArrayList<String> cars = new ArrayList<>();
@@ -11,8 +13,14 @@ public class ArrayList1 {
         //we iterate through
         for(String car : cars){
             System.out.println(car);
-            System.out.println(cars.indexOf(car));
         }
+        //iterators
+        Iterator<String> iterator = cars.iterator();
+        while(iterator.hasNext()){
+            String car = iterator.next();
+            System.out.println(car);
+        }
+
 
 
     }
