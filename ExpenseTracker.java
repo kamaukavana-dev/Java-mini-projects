@@ -30,7 +30,7 @@ public class ExpenseTracker {
                 case 4 -> System.out.println("Goodbye!");
                 default -> System.out.println("Invalid choice. Try again.");
             }
-        } while (choice <= 4);
+        } while (choice != 4); // ✅ loop exits cleanly when choice = 4
 
         scanner.close();
     }
@@ -38,13 +38,19 @@ public class ExpenseTracker {
     private static void addExpense(Scanner scanner) {
         try {
             System.out.print("Enter category: ");
-            String category = scanner.nextLine();
+            String category = scanner.nextLine().trim();
+
+            if (category.isEmpty()) {
+                System.out.println("Category cannot be empty!");
+                return;
+            }
 
             System.out.print("Enter amount: ");
             double amount = Double.parseDouble(scanner.nextLine());
 
-            if (amount < 0) {
-                throw new IllegalArgumentException("Expense cannot be negative!");
+            if (amount <= 0) {
+                System.out.println("Expense must be a positive number!");
+                return;
             }
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
@@ -53,9 +59,7 @@ public class ExpenseTracker {
                 System.out.println("Expense added successfully!");
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid amount! Please enter a number.");
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Invalid amount! Please enter a valid number.");
         } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
@@ -81,7 +85,9 @@ public class ExpenseTracker {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" - ");
-                total += Double.parseDouble(parts[1]);
+                if (parts.length == 2) {
+                    total += Double.parseDouble(parts[1]);
+                }
             }
             System.out.println("Total Expenses: " + total);
         } catch (FileNotFoundException e) {
