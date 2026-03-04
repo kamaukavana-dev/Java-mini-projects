@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class ExpenseTracker {
     private static final String FILE_NAME = "expenses.txt";
@@ -13,7 +13,8 @@ public class ExpenseTracker {
             System.out.println("1. Add Expense");
             System.out.println("2. View Expenses");
             System.out.println("3. Calculate Total");
-            System.out.println("4. Exit");
+            System.out.println("4. View Sorted Expenses");
+            System.out.println("5. Exit");
             System.out.print("Enter choice: ");
 
             try {
@@ -27,14 +28,20 @@ public class ExpenseTracker {
                 case 1 -> addExpense(scanner);
                 case 2 -> viewExpenses();
                 case 3 -> calculateTotal();
-                case 4 -> System.out.println("Goodbye!");
+                case 4 -> viewSortedExpenses(scanner); // ✅ new feature
+                case 5 -> System.out.println("Goodbye!");
                 default -> System.out.println("Invalid choice. Try again.");
             }
+<<<<<<< HEAD
         } while (choice != 4); // ✅ loop exits cleanly when choice = 4
+=======
+        } while (choice != 5); // ✅ exit only when user chooses 5
+>>>>>>> 1b96de5 (Adjusted new features into my mini projects)
 
         scanner.close();
     }
 
+    // ------------------- ADD EXPENSE -------------------
     private static void addExpense(Scanner scanner) {
         try {
             System.out.print("Enter category: ");
@@ -65,6 +72,7 @@ public class ExpenseTracker {
         }
     }
 
+    // ------------------- VIEW EXPENSES -------------------
     private static void viewExpenses() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
@@ -79,13 +87,18 @@ public class ExpenseTracker {
         }
     }
 
+    // ------------------- CALCULATE TOTAL -------------------
     private static void calculateTotal() {
         double total = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" - ");
+<<<<<<< HEAD
                 if (parts.length == 2) {
+=======
+                if (parts.length == 2) { // ✅ safety check
+>>>>>>> 1b96de5 (Adjusted new features into my mini projects)
                     total += Double.parseDouble(parts[1]);
                 }
             }
@@ -94,6 +107,53 @@ public class ExpenseTracker {
             System.out.println("No expenses recorded yet.");
         } catch (IOException | NumberFormatException e) {
             System.out.println("Error calculating total: " + e.getMessage());
+        }
+    }
+
+    // ------------------- VIEW SORTED EXPENSES -------------------
+    private static void viewSortedExpenses(Scanner scanner) {
+        List<String[]> expenses = new ArrayList<>();
+
+        // Load expenses into a list
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" - ");
+                if (parts.length == 2) {
+                    expenses.add(parts);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("No expenses recorded yet.");
+            return;
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+            return;
+        }
+
+        // Ask user how to sort
+        System.out.println("Sort by: 1. Category  2. Amount");
+        int sortChoice;
+        try {
+            sortChoice = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input! Defaulting to Category.");
+            sortChoice = 1;
+        }
+
+        // Perform sorting
+        if (sortChoice == 1) {
+            // Sort alphabetically by category
+            expenses.sort(Comparator.comparing(arr -> arr[0]));
+        } else if (sortChoice == 2) {
+            // Sort numerically by amount
+            expenses.sort(Comparator.comparingDouble(arr -> Double.parseDouble(arr[1])));
+        }
+
+        // Display sorted expenses
+        System.out.println("\n  🎰🎰 SORTED EXPENSES 🎰🎰  \n");
+        for (String[] exp : expenses) {
+            System.out.println(exp[0] + " - " + exp[1]);
         }
     }
 }

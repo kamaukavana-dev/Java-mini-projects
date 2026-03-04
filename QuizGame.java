@@ -58,7 +58,7 @@ public class QuizGame {
                 }
             }
 
-            System.out.println("Total marks: " + (score * 10) + " out of " + (answers.length * 10) + "\n");
+            System.out.println("Total marks: " + (score * 10) + " out of " + (questions.length * 10) + "\n");
             System.out.print("Do you wish to repeat the test? ['yes' or 'no']: ");
             String repeat = sc.nextLine();
 

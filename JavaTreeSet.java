@@ -5,7 +5,6 @@ public class JavaTreeSet {
         numbers.add(8);
         numbers.add(5);
         numbers.add(2);
-        numbers.add(7);
         for(Integer number : numbers){
             if(number % 2 == 0){
                 System.out.println("Even :"+number);

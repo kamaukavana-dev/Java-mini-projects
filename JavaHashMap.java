@@ -8,7 +8,7 @@ public class JavaHashMap {
         StudentInfo.put("Richard","grade 8");
         StudentInfo.put("Daniel","grade 7");
         StudentInfo.put("Jefferson","grade 6");
-        StudentInfo.put("Kelvin","grade 5");//duplicate key
+        StudentInfo.put("Richard","grade 5");//duplicate key
         StudentInfo.put("Samson","grade 9");//duplicate value
         //print key sets only
         for(String name : StudentInfo.keySet()){

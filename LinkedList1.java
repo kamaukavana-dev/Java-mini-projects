@@ -11,12 +11,12 @@ public class LinkedList1 {
         Iterator<String> iterator = car.iterator();
         while(iterator.hasNext()){
             String name = iterator.next();
-            if(name.equals("Audi")){
+            if(name.equals("Chevy")){
                 iterator.remove();
             }
         }
         System.out.println(car);
         System.out.println(car.indexOf("Audi"));
-        System.out.println(car.indexOf("BMW"));
+        System.out.println(car.indexOf("Chevy"));
     }
 }
