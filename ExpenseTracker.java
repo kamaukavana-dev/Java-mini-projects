@@ -32,11 +32,7 @@ public class ExpenseTracker {
                 case 5 -> System.out.println("Goodbye!");
                 default -> System.out.println("Invalid choice. Try again.");
             }
-<<<<<<< HEAD
-        } while (choice != 4); // ✅ loop exits cleanly when choice = 4
-=======
         } while (choice != 5); // ✅ exit only when user chooses 5
->>>>>>> 1b96de5 (Adjusted new features into my mini projects)
 
         scanner.close();
     }
@@ -94,11 +90,7 @@ public class ExpenseTracker {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" - ");
-<<<<<<< HEAD
-                if (parts.length == 2) {
-=======
                 if (parts.length == 2) { // ✅ safety check
->>>>>>> 1b96de5 (Adjusted new features into my mini projects)
                     total += Double.parseDouble(parts[1]);
                 }
             }
@@ -143,10 +135,8 @@ public class ExpenseTracker {
 
         // Perform sorting
         if (sortChoice == 1) {
-            // Sort alphabetically by category
             expenses.sort(Comparator.comparing(arr -> arr[0]));
         } else if (sortChoice == 2) {
-            // Sort numerically by amount
             expenses.sort(Comparator.comparingDouble(arr -> Double.parseDouble(arr[1])));
         }
 
