@@ -35,6 +35,23 @@ public class QuizCliApp {
         questions.add(new QuizQuestion("What is the capital of France?", Arrays.asList("Berlin", "London", "Paris", "Rome"), 3, "Paris is the capital of France."));
         questions.add(new QuizQuestion("Which planet is known as the Red Planet?", Arrays.asList("Earth", "Mars", "Jupiter", "Saturn"), 2, "Mars appears red due to iron oxide on its surface."));
         questions.add(new QuizQuestion("What is 2 + 2?", Arrays.asList("3", "4", "5"), 2, "Basic arithmetic."));
+        questions.add(new QuizQuestion("Who wrote the novel \"1984\"?", Arrays.asList("Aldous Huxley", "George Orwell", "J.K. Rowling", "Ernest Hemingway"), 2, "George Orwell was the pen name of Eric Arthur Blair."));
+        questions.add(new QuizQuestion("What is the largest animal currently on Earth?", Arrays.asList("African elephant", "Blue whale", "Giraffe", "Great white shark"), 2, "The blue whale is the largest known animal to have ever lived."));
+        questions.add(new QuizQuestion("Which chemical element has the symbol O?", Arrays.asList("Osmium", "Gold", "Oxygen", "Oganesson"), 3, "O is the symbol for oxygen."));
+        questions.add(new QuizQuestion("How many continents are there on Earth?", Arrays.asList("5", "6", "7", "8"), 3, "The commonly accepted count is seven."));
+        questions.add(new QuizQuestion("Which programming language uses 'def' to declare a function?", Arrays.asList("Java", "Python", "C", "Go"), 2, "In Python, functions start with the def keyword."));
+        questions.add(new QuizQuestion("What does HTTP status code 404 mean?", Arrays.asList("OK", "Moved Permanently", "Forbidden", "Not Found"), 4, "404 indicates the requested resource could not be found."));
+        questions.add(new QuizQuestion("Which organ pumps blood throughout the human body?", Arrays.asList("Lungs", "Heart", "Liver", "Kidneys"), 2, "The heart pumps blood through the circulatory system."));
+        questions.add(new QuizQuestion("What is the binary representation of the decimal number 5?", Arrays.asList("101", "110", "111", "100"), 1, "5 in binary is 101."));
+        questions.add(new QuizQuestion("Which ocean is the largest by surface area?", Arrays.asList("Atlantic", "Indian", "Arctic", "Pacific"), 4, "The Pacific Ocean is the largest."));
+        questions.add(new QuizQuestion("In what year was the first iPhone released?", Arrays.asList("2005", "2007", "2009", "2011"), 2, "Apple released the first iPhone in 2007."));
+        questions.add(new QuizQuestion("Who painted the Mona Lisa?", Arrays.asList("Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"), 2, "Leonardo da Vinci painted the Mona Lisa."));
+        questions.add(new QuizQuestion("What does CSS stand for in web development?", Arrays.asList("Computer Styled Sheets", "Creative Style System", "Cascading Style Sheets", "Content Style Syntax"), 3, "CSS stands for Cascading Style Sheets."));
+        questions.add(new QuizQuestion("Which of these numbers is a prime?", Arrays.asList("21", "29", "39", "51"), 2, "29 is only divisible by 1 and itself."));
+        questions.add(new QuizQuestion("Kathmandu is the capital city of which country?", Arrays.asList("Bhutan", "Nepal", "Laos", "Cambodia"), 2, "Kathmandu is the capital of Nepal."));
+        questions.add(new QuizQuestion("What gas do plants primarily absorb during photosynthesis?", Arrays.asList("Oxygen", "Nitrogen", "Carbon dioxide", "Helium"), 3, "Plants take in carbon dioxide and release oxygen."));
+        questions.add(new QuizQuestion("Which planet currently has the most known moons?", Arrays.asList("Earth", "Mars", "Jupiter", "Mercury"), 3, "Jupiter has the most confirmed moons discovered so far."));
+        questions.add(new QuizQuestion("What is the boiling point of water at sea level in degrees Celsius?", Arrays.asList("90", "95", "100", "105"), 3, "Water boils at 100°C at standard atmospheric pressure."));
 
         if (fileArg != null) {
             Path p = Paths.get(fileArg);
