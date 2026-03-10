@@ -166,7 +166,7 @@ public class TicTacToe {
         if (mode == Mode.HUMAN_VS_AI_EASY) {
             return randomMove(board);
         }
-        return bestMove(board, aiMark, humanMark);
+        return bestMoveStrong(board, aiMark, humanMark);
     }
 
     private static int randomMove(char[][] board) {
@@ -181,50 +181,97 @@ public class TicTacToe {
         return free.get(RANDOM.nextInt(free.size()));
     }
 
-    private static int bestMove(char[][] board, char aiMark, char humanMark) {
-        int bestScore = Integer.MIN_VALUE;
-        int chosenMove = -1;
+    // Unbeatable AI: immediate win/block, then alpha-beta minimax with center/corner priority
+    private static int bestMoveStrong(char[][] board, char aiMark, char humanMark) {
+        List<Integer> ordered = orderedMoves(board);
 
-        for (int i = 0; i < SIZE * SIZE; i++) {
-            int row = i / SIZE;
-            int col = i % SIZE;
+        // 1) Take a winning move if available
+        for (int move : ordered) {
+            int row = (move - 1) / SIZE;
+            int col = (move - 1) % SIZE;
+            board[row][col] = aiMark;
+            boolean winNow = checkWin(board, aiMark);
+            board[row][col] = EMPTY;
+            if (winNow) return move;
+        }
+
+        // 2) Block opponent's immediate win
+        for (int move : ordered) {
+            int row = (move - 1) / SIZE;
+            int col = (move - 1) % SIZE;
+            board[row][col] = humanMark;
+            boolean oppWins = checkWin(board, humanMark);
+            board[row][col] = EMPTY;
+            if (oppWins) return move;
+        }
+
+        // 3) Full search with alpha-beta, honoring our preferred ordering for tie breaks
+        int bestScore = Integer.MIN_VALUE;
+        int chosenMove = ordered.get(0);
+
+        for (int move : ordered) {
+            int row = (move - 1) / SIZE;
+            int col = (move - 1) % SIZE;
             if (board[row][col] != EMPTY) continue;
 
             board[row][col] = aiMark;
-            int score = minimax(board, 0, false, aiMark, humanMark);
+            int score = minimax(board, 0, false, aiMark, humanMark, Integer.MIN_VALUE, Integer.MAX_VALUE);
             board[row][col] = EMPTY;
 
             if (score > bestScore) {
                 bestScore = score;
-                chosenMove = i + 1;
+                chosenMove = move;
             }
         }
         return chosenMove;
     }
 
-    private static int minimax(char[][] board, int depth, boolean isMaximizing, char aiMark, char humanMark) {
+    private static List<Integer> orderedMoves(char[][] board) {
+        // Preferred order: center, corners, then edges
+        int[] preference = {4, 0, 2, 6, 8, 1, 3, 5, 7}; // zero-based indices
+        List<Integer> moves = new ArrayList<>();
+        for (int idx : preference) {
+            int row = idx / SIZE;
+            int col = idx % SIZE;
+            if (board[row][col] == EMPTY) {
+                moves.add(idx + 1); // convert to 1-9 position
+            }
+        }
+        return moves;
+    }
+
+    private static int minimax(char[][] board, int depth, boolean isMaximizing, char aiMark, char humanMark, int alpha, int beta) {
         if (checkWin(board, aiMark)) return 10 - depth; // prefer faster wins
         if (checkWin(board, humanMark)) return depth - 10; // prefer slower losses
         if (isDraw(board)) return 0;
 
-        int best = isMaximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-
-        for (int i = 0; i < SIZE * SIZE; i++) {
-            int row = i / SIZE;
-            int col = i % SIZE;
-            if (board[row][col] != EMPTY) continue;
-
-            board[row][col] = isMaximizing ? aiMark : humanMark;
-            int score = minimax(board, depth + 1, !isMaximizing, aiMark, humanMark);
-            board[row][col] = EMPTY;
-
-            if (isMaximizing) {
+        if (isMaximizing) {
+            int best = Integer.MIN_VALUE;
+            for (int move : orderedMoves(board)) {
+                int row = (move - 1) / SIZE;
+                int col = (move - 1) % SIZE;
+                board[row][col] = aiMark;
+                int score = minimax(board, depth + 1, false, aiMark, humanMark, alpha, beta);
+                board[row][col] = EMPTY;
                 best = Math.max(best, score);
-            } else {
-                best = Math.min(best, score);
+                alpha = Math.max(alpha, best);
+                if (beta <= alpha) break; // beta cut-off
             }
+            return best;
+        } else {
+            int best = Integer.MAX_VALUE;
+            for (int move : orderedMoves(board)) {
+                int row = (move - 1) / SIZE;
+                int col = (move - 1) % SIZE;
+                board[row][col] = humanMark;
+                int score = minimax(board, depth + 1, true, aiMark, humanMark, alpha, beta);
+                board[row][col] = EMPTY;
+                best = Math.min(best, score);
+                beta = Math.min(beta, best);
+                if (beta <= alpha) break; // alpha cut-off
+            }
+            return best;
         }
-        return best;
     }
 
     private static boolean isValidMove(char[][] board, int move) {
