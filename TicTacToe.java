@@ -1,61 +1,256 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class TicTacToe {
     private static final char EMPTY = ' ';
     private static final int SIZE = 3;
-    private static char[][] board = new char[SIZE][SIZE];
+    private static final Scanner INPUT = new Scanner(System.in);
+    private static final Random RANDOM = new Random();
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        initBoard();
-        char currentPlayer = 'X';
-        boolean gameOver = false;
+    private enum Mode {
+        HUMAN_VS_HUMAN,
+        HUMAN_VS_AI_EASY,
+        HUMAN_VS_AI_SMART
+    }
 
-        System.out.println("=== TIC TAC TOE ===");
+    private static class Scoreboard {
+        int xWins;
+        int oWins;
+        int draws;
 
-        while (!gameOver) {
-            printBoard();
-            System.out.println("Player " + currentPlayer + ", enter your move (1-9): ");
-            int move;
-            try {
-                move = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input! Enter a number 1-9.");
-                continue;
-            }
-
-            if (!makeMove(move, currentPlayer)) {
-                System.out.println("Invalid move! Try again.");
-                continue;
-            }
-
-            if (checkWin(currentPlayer)) {
-                printBoard();
-                System.out.println("Player " + currentPlayer + " wins!");
-                gameOver = true;
-            } else if (isDraw()) {
-                printBoard();
-                System.out.println("It's a draw!");
-                gameOver = true;
+        void recordWin(char mark) {
+            if (mark == 'X') {
+                xWins++;
             } else {
-                currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                oWins++;
             }
         }
 
-        scanner.close();
+        void recordDraw() {
+            draws++;
+        }
+
+        void print() {
+            System.out.println("Scoreboard -> X: " + xWins + " | O: " + oWins + " | Draws: " + draws);
+        }
     }
 
-    // Initialize board with empty spaces
-    private static void initBoard() {
+    public static void main(String[] args) {
+        Scoreboard scores = new Scoreboard();
+        System.out.println("=== TIC TAC TOE CLI ===");
+        System.out.println("q: quit at any menu, during a game type q to leave the round");
+
+        boolean running = true;
+        while (running) {
+            Mode mode = promptMode();
+            if (mode == null) {
+                running = false;
+                break;
+            }
+
+            boolean playAgain = true;
+            while (playAgain) {
+                playSingleGame(mode, scores);
+                playAgain = askYesNo("Play again with the same mode? (y/n): ");
+            }
+        }
+
+        System.out.println("Thanks for playing!");
+    }
+
+    private static void playSingleGame(Mode mode, Scoreboard scores) {
+        char[][] board = initBoard();
+        char current = 'X';
+        char humanMark = 'X';
+        char aiMark = 'O';
+
+        if (mode != Mode.HUMAN_VS_HUMAN) {
+            boolean humanFirst = askYesNo("Do you want to be X and go first? (y/n): ");
+            humanMark = humanFirst ? 'X' : 'O';
+            aiMark = (humanMark == 'X') ? 'O' : 'X';
+            current = 'X';
+        }
+
+        boolean roundActive = true;
+        while (roundActive) {
+            printBoard(board);
+
+            boolean humanTurn = mode == Mode.HUMAN_VS_HUMAN || current == humanMark;
+            int move;
+            if (humanTurn) {
+                move = promptHumanMove(board, current);
+                if (move == -1) {
+                    System.out.println("Round cancelled.");
+                    return;
+                }
+            } else {
+                move = aiMove(board, aiMark, humanMark, mode);
+                System.out.println("Computer chooses position " + move);
+            }
+
+            placeMark(board, move, current);
+
+            if (checkWin(board, current)) {
+                printBoard(board);
+                System.out.println("Player " + current + " wins!");
+                scores.recordWin(current);
+                roundActive = false;
+            } else if (isDraw(board)) {
+                printBoard(board);
+                System.out.println("It's a draw.");
+                scores.recordDraw();
+                roundActive = false;
+            } else {
+                current = (current == 'X') ? 'O' : 'X';
+            }
+        }
+
+        scores.print();
+    }
+
+    private static Mode promptMode() {
+        while (true) {
+            System.out.println();
+            System.out.println("Choose mode: 1) Human vs Human  2) Human vs AI (easy)  3) Human vs AI (smart)  q) Quit");
+            String input = INPUT.nextLine().trim().toLowerCase();
+            switch (input) {
+                case "1":
+                    return Mode.HUMAN_VS_HUMAN;
+                case "2":
+                    return Mode.HUMAN_VS_AI_EASY;
+                case "3":
+                    return Mode.HUMAN_VS_AI_SMART;
+                case "q":
+                    return null;
+                default:
+                    System.out.println("Invalid choice. Enter 1, 2, 3 or q.");
+            }
+        }
+    }
+
+    private static boolean askYesNo(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = INPUT.nextLine().trim().toLowerCase();
+            if (input.equals("y") || input.equals("yes")) return true;
+            if (input.equals("n") || input.equals("no")) return false;
+            if (input.equals("q")) return false;
+            System.out.println("Please answer with y or n (or q to cancel).");
+        }
+    }
+
+    private static int promptHumanMove(char[][] board, char mark) {
+        while (true) {
+            System.out.print("Player " + mark + " enter position (1-9, q to quit round): ");
+            String input = INPUT.nextLine().trim().toLowerCase();
+            if (input.equals("q")) return -1;
+            int move;
+            try {
+                move = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Not a number. Try again.");
+                continue;
+            }
+
+            if (!isValidMove(board, move)) {
+                System.out.println("Invalid move. Choose an empty spot 1-9.");
+                continue;
+            }
+            return move;
+        }
+    }
+
+    private static int aiMove(char[][] board, char aiMark, char humanMark, Mode mode) {
+        if (mode == Mode.HUMAN_VS_AI_EASY) {
+            return randomMove(board);
+        }
+        return bestMove(board, aiMark, humanMark);
+    }
+
+    private static int randomMove(char[][] board) {
+        List<Integer> free = new ArrayList<>();
+        for (int i = 0; i < SIZE * SIZE; i++) {
+            int row = i / SIZE;
+            int col = i % SIZE;
+            if (board[row][col] == EMPTY) {
+                free.add(i + 1);
+            }
+        }
+        return free.get(RANDOM.nextInt(free.size()));
+    }
+
+    private static int bestMove(char[][] board, char aiMark, char humanMark) {
+        int bestScore = Integer.MIN_VALUE;
+        int chosenMove = -1;
+
+        for (int i = 0; i < SIZE * SIZE; i++) {
+            int row = i / SIZE;
+            int col = i % SIZE;
+            if (board[row][col] != EMPTY) continue;
+
+            board[row][col] = aiMark;
+            int score = minimax(board, 0, false, aiMark, humanMark);
+            board[row][col] = EMPTY;
+
+            if (score > bestScore) {
+                bestScore = score;
+                chosenMove = i + 1;
+            }
+        }
+        return chosenMove;
+    }
+
+    private static int minimax(char[][] board, int depth, boolean isMaximizing, char aiMark, char humanMark) {
+        if (checkWin(board, aiMark)) return 10 - depth; // prefer faster wins
+        if (checkWin(board, humanMark)) return depth - 10; // prefer slower losses
+        if (isDraw(board)) return 0;
+
+        int best = isMaximizing ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+
+        for (int i = 0; i < SIZE * SIZE; i++) {
+            int row = i / SIZE;
+            int col = i % SIZE;
+            if (board[row][col] != EMPTY) continue;
+
+            board[row][col] = isMaximizing ? aiMark : humanMark;
+            int score = minimax(board, depth + 1, !isMaximizing, aiMark, humanMark);
+            board[row][col] = EMPTY;
+
+            if (isMaximizing) {
+                best = Math.max(best, score);
+            } else {
+                best = Math.min(best, score);
+            }
+        }
+        return best;
+    }
+
+    private static boolean isValidMove(char[][] board, int move) {
+        if (move < 1 || move > 9) return false;
+        int row = (move - 1) / SIZE;
+        int col = (move - 1) % SIZE;
+        return board[row][col] == EMPTY;
+    }
+
+    private static void placeMark(char[][] board, int move, char mark) {
+        int row = (move - 1) / SIZE;
+        int col = (move - 1) % SIZE;
+        board[row][col] = mark;
+    }
+
+    private static char[][] initBoard() {
+        char[][] board = new char[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 board[i][j] = EMPTY;
             }
         }
+        return board;
     }
 
-    // Print the board
-    private static void printBoard() {
+    private static void printBoard(char[][] board) {
         System.out.println();
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -74,35 +269,23 @@ public class TicTacToe {
         System.out.println();
     }
 
-    // Make a move
-    private static boolean makeMove(int move, char player) {
-        if (move < 1 || move > 9) return false;
-        int row = (move - 1) / SIZE;
-        int col = (move - 1) % SIZE;
-        if (board[row][col] != EMPTY) return false;
-        board[row][col] = player;
-        return true;
-    }
-
-    // Check win condition
-    private static boolean checkWin(char player) {
+    private static boolean checkWin(char[][] board, char mark) {
         // Rows
         for (int i = 0; i < SIZE; i++) {
-            if (board[i][0] == player && board[i][1] == player && board[i][2] == player) return true;
+            if (board[i][0] == mark && board[i][1] == mark && board[i][2] == mark) return true;
         }
         // Columns
         for (int j = 0; j < SIZE; j++) {
-            if (board[0][j] == player && board[1][j] == player && board[2][j] == player) return true;
+            if (board[0][j] == mark && board[1][j] == mark && board[2][j] == mark) return true;
         }
         // Diagonals
-        if (board[0][0] == player && board[1][1] == player && board[2][2] == player) return true;
-        if (board[0][2] == player && board[1][1] == player && board[2][0] == player) return true;
+        if (board[0][0] == mark && board[1][1] == mark && board[2][2] == mark) return true;
+        if (board[0][2] == mark && board[1][1] == mark && board[2][0] == mark) return true;
 
         return false;
     }
 
-    // Check draw
-    private static boolean isDraw() {
+    private static boolean isDraw(char[][] board) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 if (board[i][j] == EMPTY) return false;
