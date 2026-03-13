@@ -17,13 +17,13 @@ public class ReverseMethod {
         int size = scanner.nextInt();
 
         int[] myArray = new int[size];
-        System.out.println("Enter " + size + " numbers:");
+        System.out.print("Enter " + size + " numbers: ");
         for (int i = 0; i < size; i++) {
             myArray[i] = scanner.nextInt();
         }
 
-        System.out.println("Normal arrangement: " + Arrays.toString(myArray));
-        System.out.println("Reverse arrangement: " + Arrays.toString(reverseArray(myArray)));
+        System.out.println("Normal arrangement: " + Arrays.toString(myArray));//turns the object back into readable code
+        System.out.println("Reverse arrangement: " + Arrays.toString(reverseArray(myArray)));//turns the reverse array's pbject back into strings which are basically readable
 
         scanner.close();
     }
