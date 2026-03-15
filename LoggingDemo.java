@@ -6,7 +6,7 @@ public class LoggingDemo {
     public static void main(String[] args) {
         logger.info("Application started"); // Info log
         try {
-            int x = 10 / 0; // Error
+            int x = 10 / 0; // logical Error
         } catch (Exception e) {
             logger.severe("Error occurred: " + e.getMessage()); // Error log
         }
