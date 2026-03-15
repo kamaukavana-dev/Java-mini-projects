@@ -58,7 +58,7 @@ class Producer implements Runnable {
 // Consumer thread
 class Consumer implements Runnable {
     private SharedBuffer buffer;
-
+    //constructor
     public Consumer(SharedBuffer buffer) {
         this.buffer = buffer;
     }
@@ -67,8 +67,8 @@ class Consumer implements Runnable {
     public void run() {
         try {
             for (int i = 1; i <= 10; i++) {
-                buffer.consume(); // consume items
-                Thread.sleep(500); // simulate slower consumption
+                buffer.consume(); // consume Items
+                Thread.sleep(400); // simulate slower consumption
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
