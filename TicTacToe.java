@@ -8,7 +8,7 @@ public class TicTacToe {
     private static final int SIZE = 3;
     private static final Scanner INPUT = new Scanner(System.in);
     private static final Random RANDOM = new Random();
-
+    //use of enum
     private enum Mode {
         HUMAN_VS_HUMAN,
         HUMAN_VS_AI_EASY,
@@ -19,7 +19,7 @@ public class TicTacToe {
         int xWins;
         int oWins;
         int draws;
-
+         //Record who wins
         void recordWin(char mark) {
             if (mark == 'X') {
                 xWins++;
@@ -27,7 +27,7 @@ public class TicTacToe {
                 oWins++;
             }
         }
-
+       //Record the draw
         void recordDraw() {
             draws++;
         }
@@ -39,7 +39,9 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         Scoreboard scores = new Scoreboard();
+        System.out.println("-----------------------");
         System.out.println("=== TIC TAC TOE CLI ===");
+        System.out.println("-----------------------");
         System.out.println("q: quit at any menu, during a game type q to leave the round");
 
         boolean running = true;
