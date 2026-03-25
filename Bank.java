@@ -28,14 +28,14 @@ class BankAccount {
     public int getPassword() {
         return password;
     }
-
+    //void method
     public void deposit(int amount) {
         if (amount > 0) {
             balance += amount;
             System.out.println("Deposited: $" + amount);
             System.out.println("New Account balance: $" + balance);
         } else {
-            System.out.println("Deposit amount must be above zero!");
+            System.out.println("Error!!!Deposit amount must be above zero!");
         }
     }
 
@@ -49,7 +49,7 @@ class BankAccount {
         }
     }
 }
-
+//main method
 public class Bank {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -65,8 +65,10 @@ public class Bank {
         System.out.print("Enter Account password: ");
         int password = scanner.nextInt();
 
-        BankAccount activeAccount = null;
-
+        BankAccount activeAccount = null;//Instead of writing separate logic for each account, you store the currently logged-in account in a single variable: activeAccount
+        //Setting activeAccount = null ensures:
+        //    It starts with a safe default (no account selected).
+        //    You can later check if login failed (if it remains null).
         // Login check
         if (name.equalsIgnoreCase(account1.getAccountName()) &&
                 number == account1.getAccountNumber() &&
