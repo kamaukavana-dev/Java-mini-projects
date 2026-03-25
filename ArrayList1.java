@@ -8,13 +8,13 @@ public class ArrayList1 {
         cars.add("Ford");
         cars.add("Toyota");
         cars.add("Audi");
-        cars.add("BMW");//repeated actually
-        cars.add("Ford");//this too
-        //we iterate through
+        cars.add("BMW");//repeated
+        cars.add("Ford");//duplicate too
+        //we iterate through using for loop
         for(String car : cars){
             System.out.println(car);
         }
-        //iterators
+        //iterators using iterator method
         Iterator<String> iterator = cars.iterator();
         while(iterator.hasNext()){
             String car = iterator.next();
