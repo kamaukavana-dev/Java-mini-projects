@@ -1,5 +1,6 @@
 import java.util.Scanner;
 public class NumChecker {
+    //Find the highest number method
     public static int largeNum(int[] myArray) {
         int max = myArray[0];
         for (int num : myArray) {
@@ -9,7 +10,7 @@ public class NumChecker {
         }
         return max;
     }
-
+    //Find the lowest number method
     public static int smallNum(int[] myArray) {
         int min = myArray[0];
         for (int num : myArray) {
@@ -39,7 +40,7 @@ public class NumChecker {
         for (int i = 0; i < size; i++) {
             arr[i] = scanner.nextInt();
             sum = sum + arr[i];
-        }
+        }         //convert sum and array_length to float
         average = (float)sum/arr.length;
 
         // Call method to find largest or smallest number or the sum and the average
