@@ -15,7 +15,7 @@ class Student extends Person{
 public class Inheritance1 {
     public static void main(String[] args){
         Person p1 = new Person();
-        Person s1 = new Student();
+        Person s1 = new Student();//polymorphic reference
         p1.Introduce();
         s1.Introduce();
     }
