@@ -5,7 +5,7 @@ public class JavaTreeMap {
         grades.put("Kelvin",60);
         grades.put("Richard",76);
         grades.put("Daniel",95);
-        grades.put("Jefferson",78);
+        grades.put("Jefferson",76);//-duplicate value will be allowed
         grades.put("Kelvin",85);//duplicate
         for(String name : grades.keySet()){
             System.out.println("name :"+name+" grade :"+grades.get(name));
