@@ -14,7 +14,7 @@ public class ClassLearn {
         this.salary = salary;
     }
 
-    // Method
+    //  void Method
     public void Info_detail() {
         System.out.println("The employee's name is " + Employee_name +
                 ", position: " + position +
@@ -22,7 +22,7 @@ public class ClassLearn {
                 ", hired in the year " + hire_year +
                 ", earning $" + salary + " per year.");
     }
-
+    //main method
     public static void main(String[] args) {
         ClassLearn info1 = new ClassLearn("Daniel Maina", "Manager", "Supervision", 2021, 100000);
         ClassLearn info2 = new ClassLearn("John Maina", "Co-worker", "Regular job", 2025, 10000);
