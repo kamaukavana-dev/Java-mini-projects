@@ -2,7 +2,7 @@ public class vowelCounter {
     public static void main(String[] args) {
         String greeting = "Hello  christopher";
         int vowelCount = 0;
-
+       //iterate through each character in the string and check if it's a vowel
         for (int i = 0; i < greeting.length(); i++) {
             char c = Character.toLowerCase(greeting.charAt(i)); // get each character
             if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
