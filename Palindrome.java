@@ -27,7 +27,7 @@ public class Palindrome {
             left++;
             right--;
         }
-        return true; // no mismatches
+        return true; // no mismatch found
     }
 
     public static void main(String[] args) {
@@ -35,11 +35,11 @@ public class Palindrome {
 
         // --- Array Palindrome ---
         System.out.print("Enter the size of your array: ");
-        int size = scanner.nextInt();
+        int size = scanner.nextInt();//store the size of the array
 
         if (size <= 0) {
             System.out.println("Array size must be greater than 0.");
-            scanner.close();
+            scanner.close();//to prevent any errors
             return;
         }
 
