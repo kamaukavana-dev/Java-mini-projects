@@ -5,16 +5,16 @@ public class ArrayStatistics {
         int min = myArray[0];
         int sum = 0;
         double average;
-        for(int array : myArray){
-            if(array > max){
-                max = array;
+        for(int num : myArray){
+            if(num > max){
+                max = num;
 
             }
-            else if (array < min){
-                min = array;
+            else if (num < min){
+                min = num;
 
             }
-            sum = sum + array;
+            sum = sum + num;
 
         }
         System.out.println("The largest number is :"+ max );
