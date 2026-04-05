@@ -1,3 +1,4 @@
+//Interface class
 interface Animal{
     public void move();
     public void sound();
@@ -21,7 +22,9 @@ class Lion implements Animal{
 }
 class Cat implements Animal{
     @Override
-    public void move(){System.out.println("The Cat moves on four limbs.");}
+    public void move(){
+        System.out.println("The Cat moves on four limbs.");
+    }
 
     @Override
     public void sound() {
@@ -51,8 +54,8 @@ class Eagle implements Animal{
 }
 public class Interface1 {
     public static void main(String[] args) {
-        Animal l1 = new Lion(); //polimerphism
-        Animal c1 = new Cat();
+        Animal l1 = new Lion(); //polimophism
+        Animal c1 = new Cat();//polimophism
         Animal e1 = new Eagle();
         e1.eat();
         e1.move();
