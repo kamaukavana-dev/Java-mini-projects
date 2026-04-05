@@ -25,7 +25,7 @@ class Cars extends Vehicles {
     }
     @Override
     void detail() {
-        super.detail();
+        super.detail();//calls parent class detail method
         System.out.println("Brand : "+brand+" name : "+name+" model : "+model);
     }
 }
@@ -38,13 +38,13 @@ class Truck extends Vehicles{
     }
     @Override
     void info() {
-        super.info();
+        super.info();//calls parent class info method
         System.out.printf("\nThis %s carry's %s loads.\n",name,type);
     }
 
     @Override
     void detail() {
-        super.detail();
+        super.detail();//calls parent class detail method
         System.out.println("Brand : "+brand+" name : "+name+" cost : $"+cost);
     }
 }
@@ -54,7 +54,7 @@ public class SuperClass {
         Cars c = new Cars("Ford", "Ranger", 12000000, "Hilux");
         Truck t = new Truck("Transist","Truck",19450000,"heavy");
 
-        System.out.printf("%s %s worth $%,d is a %s model.%n   \n", c.brand, c.name, c.cost, c.model);
+        System.out.printf("%s %s worth $%,d is a %s model.\n   \n", c.brand, c.name, c.cost, c.model);
         t.info();
         c.detail();
         t.detail();
