@@ -9,7 +9,7 @@ public class Class1 {
         this.age = age;
         this.course = course;
     }
-
+    //method overloading...
     // Overloaded constructor (default age = 18)
     public Class1(String name, String course){
         this.name = name;
@@ -17,23 +17,24 @@ public class Class1 {
         this.age = 18;   // default value
     }
 
-    // Getters and Setters
+    // Getters
     public String getName(){
         return name;
     }
-    public void setName(String name){
-        this.name = name;
-    }
-
     public int getAge(){
         return age;
-    }
-    public void setAge(int age){
-        this.age = age;
     }
 
     public String getCourse(){
         return course;
+    }
+    //setters
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setAge(int age){
+        this.age = age;
     }
     public void setCourse(String course){
         this.course = course;
@@ -43,7 +44,7 @@ public class Class1 {
     public void Study(){
         System.out.println(name + " is currently " + age + " years old, studying " + course + ".");
     }
-
+   //overload method
     public void Study(int hours){
         System.out.println(name + " is currently " + age + " years old, studying " + course + " for " + hours + " hours.");
     }
