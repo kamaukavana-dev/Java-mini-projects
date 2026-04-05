@@ -3,9 +3,9 @@ public class ShortestStringChecker {
         String[] fruits = {"apple", "banana", "Mangoes", "strawberry", "pear"};
 
         String shortest = fruits[0]; // start with the first fruit
-
+        //loop through the array using for loop
         for (String fruit : fruits) {
-            if (fruit.length() < shortest.length()) {
+            if (shortest.length()>fruit.length()) {
                 shortest = fruit;
             }
         }
