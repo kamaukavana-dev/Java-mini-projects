@@ -3,9 +3,9 @@ public class LongestStringChecker {
         String[] fruits = {"apple", "banana", "kiwi", "strawberry", "pear"};
 
         String longest = fruits[0]; // start with the first fruit
-
+        //loop through the array using a for loop
         for (String fruit : fruits) {
-            if (fruit.length() > longest.length()) {
+            if (longest.length()<fruit.length()) {
                 longest = fruit; // updates longest if current fruit is longer
             }
         }
