@@ -6,7 +6,7 @@ public class guessingGame {
         Scanner scanner = new Scanner(System.in);
 
         boolean playAgain = true;
-
+        //while loop
         while (playAgain) {
             System.out.println("""
                     1) CHOOSE YOUR LUCKY NUMBER BETWEEN [1 & 20]
@@ -16,9 +16,9 @@ public class guessingGame {
                     5) GOOD LUCK.....
                     """);
             Random random = new Random();
-            int lucky_num = random.nextInt(20) + 1;
+            int lucky_num = random.nextInt(1,21) ;
             int tries = 3;
-
+            //Inner while loop
             while (tries > 0) {
                 System.out.print("Choose your lucky number: ");
                 int num = scanner.nextInt();
