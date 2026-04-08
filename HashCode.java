@@ -23,11 +23,6 @@ class Person1 {
     }
 }
 
-public class HashCode{
-    public static void main(String[] args) {
-        Set<Person1> set = new HashSet<>();
-
-        Person1 p1 = new Person1("Daniel");
-        Person1 p2 = new Person1("Daniel");
+;
 
 
