@@ -9,10 +9,29 @@ class Person1 {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;                  // same reference
+        if (!(o instanceof Person1)) return false;    // must be same type
+        Person1 p = (Person1) o;
+        return Objects.equals(name, p.name);         // compare by name
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);                   // consistent with equals
+    }
+}
 
+public class HashCode{
+    public static void main(String[] args) {
+        Set<Person1> set = new HashSet<>();
 
+        Person1 p1 = new Person1("Daniel");
+        Person1 p2 = new Person1("Daniel");
 
+        set.add(p1);
 
-
-
+        System.out.println(set.contains(p2)); // ✅ true
+    }
+}
