@@ -12,8 +12,4 @@ public class DefensiveCopying {
     }
     public static void main(String[] args){
         DefensiveCopying c = new DefensiveCopying(new int[]{1,2,3});
-        int [] arr = c.getMyArr();
-        arr[0] = 100; // Modifying the returned array does not affect the internal state of the DefensiveCopying instance
-        System.out.println(Arrays.toString(c.getMyArr())); // Output: [1, 2, 3]
-    }
-}
+
