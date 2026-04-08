@@ -17,12 +17,8 @@ class Person1 {
         return Objects.equals(name, p.name);         // compare by name
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);                   // consistent with equals
-    }
-}
 
-;
+
+
 
 
