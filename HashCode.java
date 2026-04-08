@@ -9,13 +9,7 @@ class Person1 {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;                  // same reference
-        if (!(o instanceof Person1)) return false;    // must be same type
-        Person1 p = (Person1) o;
-        return Objects.equals(name, p.name);         // compare by name
-    }
+
 
 
 
