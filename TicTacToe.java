@@ -598,17 +598,7 @@ public class TicTacToe {
                     continue;
                 }
 
-                int col;
-                try { col = Integer.parseInt(colInput); }
-                catch (NumberFormatException e) { Renderer.error("Enter a number 1-3."); continue; }
-                if (col < 1 || col > 3) { Renderer.error("Column must be 1-3."); continue; }
 
-                int idx = Board.toIndex(row - 1, col - 1);
-                if (!board.isEmpty(idx)) { Renderer.error("Cell (" + row + "," + col + ") is taken."); continue; }
-
-                return idx;
-            }
-        }
 
 
 
