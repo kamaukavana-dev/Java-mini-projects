@@ -669,23 +669,5 @@ public class TicTacToe {
                 diff = promptDifficulty(scanner);
                 if (diff == null) continue;
             }
-
-            boolean rematch = true;
-            while (rematch) {
-                engine.play(mode, diff);
-                Renderer.prompt("Rematch? (y/n): ");
-                String ans = scanner.nextLine().trim().toLowerCase();
-                rematch = ans.equals("y") || ans.equals("yes");
-            }
-        }
-
-        Renderer.clear();
-        System.out.println();
-        System.out.println("  Thanks for playing! Final scores:");
-        System.out.println();
-        Renderer.header(scores);
-        System.out.println();
-    }
-
-    /** Prompts for AI difficulty. Returns null to go back. */
+            /
 
