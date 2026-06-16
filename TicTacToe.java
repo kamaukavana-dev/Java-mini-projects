@@ -632,14 +632,7 @@ public class TicTacToe {
             Renderer.info("Move undone.");
         }
 
-        /** Blocks until the user presses Enter. */
-        private void waitForEnter() {
-            Renderer.prompt("Press Enter to continue...");
-            scanner.nextLine();
-        }
-    }
 
-    // Main menu loop only.
 
 
 
