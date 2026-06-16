@@ -580,23 +580,7 @@ public class TicTacToe {
                     continue;
                 }
 
-                int row;
-                try { row = Integer.parseInt(rowInput); }
-                catch (NumberFormatException e) { Renderer.error("Enter a number 1-3."); continue; }
-                if (row < 1 || row > 3) { Renderer.error("Row must be 1-3."); continue; }
 
-                // Prompt for col
-                Renderer.prompt("Player " + mark + " - col (1-3): ");
-                String colInput = scanner.nextLine().trim().toLowerCase();
-
-                if (colInput.equals("q")) return -1;
-
-                if (colInput.equals("u")) {
-                    if (!undoAllowed) { Renderer.error("Undo not available in this mode."); continue; }
-                    if (!history.canUndo()) { Renderer.error("Nothing to undo."); continue; }
-                    performUndo(board, history, mode, diff, mark);
-                    continue;
-                }
 
 
 
