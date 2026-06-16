@@ -610,27 +610,7 @@ public class TicTacToe {
             }
         }
 
-        /** Performs undo. In PvC/CvP, undoes two moves (AI + human). */
-        private void performUndo(Board board, MoveHistory history,
-                                 GameMode mode, Difficulty diff, char currentMark) {
-            if (mode == GameMode.PVC || mode == GameMode.CVP) {
-                if (history.size() >= 2) {
-                    history.pop(board);
-                    history.pop(board);
-                } else if (history.size() == 1) {
-                    history.pop(board);
-                } else {
-                    Renderer.error("Nothing to undo.");
-                    return;
-                }
-            } else {
-                history.pop(board);
-            }
 
-            String turnLabel = "Player " + currentMark + "'s turn";
-            Renderer.gameScreen(board, scores, turnLabel, null);
-            Renderer.info("Move undone.");
-        }
 
 
 
