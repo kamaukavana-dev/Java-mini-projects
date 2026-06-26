@@ -45,9 +45,9 @@ public class TicTacToe {
 
         /** All 8 winning lines as flat-index triplets. */
         static final int[][] WIN_LINES = {
-            {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
-            {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
-            {0, 4, 8}, {2, 4, 6}
+                {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
+                {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
+                {0, 4, 8}, {2, 4, 6}
         };
 
         private final char[] cells;
@@ -539,7 +539,7 @@ public class TicTacToe {
                 if (winLine != null) {
                     scores.recordWin(current);
                     String msg = (((current == 'X') ? xIsHuman : oIsHuman) ? "Player" : "AI") +
-                                 " " + current + " wins!";
+                            " " + current + " wins!";
                     Renderer.flashWin(board, scores, msg, winLine);
                     waitForEnter();
                     return;
@@ -580,14 +580,129 @@ public class TicTacToe {
                     continue;
                 }
 
+                int row;
+                try { row = Integer.parseInt(rowInput); }
+                catch (NumberFormatException e) { Renderer.error("Enter a number 1-3."); continue; }
+                if (row < 1 || row > 3) { Renderer.error("Row must be 1-3."); continue; }
 
+                // Prompt for col
+                Renderer.prompt("Player " + mark + " - col (1-3): ");
+                String colInput = scanner.nextLine().trim().toLowerCase();
 
+                if (colInput.equals("q")) return -1;
 
+                if (colInput.equals("u")) {
+                    if (!undoAllowed) { Renderer.error("Undo not available in this mode."); continue; }
+                    if (!history.canUndo()) { Renderer.error("Nothing to undo."); continue; }
+                    performUndo(board, history, mode, diff, mark);
+                    continue;
+                }
 
+                int col;
+                try { col = Integer.parseInt(colInput); }
+                catch (NumberFormatException e) { Renderer.error("Enter a number 1-3."); continue; }
+                if (col < 1 || col > 3) { Renderer.error("Column must be 1-3."); continue; }
 
+                int idx = Board.toIndex(row - 1, col - 1);
+                if (!board.isEmpty(idx)) { Renderer.error("Cell (" + row + "," + col + ") is taken."); continue; }
 
+                return idx;
+            }
+        }
 
+        /** Performs undo. In PvC/CvP, undoes two moves (AI + human). */
+        private void performUndo(Board board, MoveHistory history,
+                                 GameMode mode, Difficulty diff, char currentMark) {
+            if (mode == GameMode.PVC || mode == GameMode.CVP) {
+                if (history.size() >= 2) {
+                    history.pop(board);
+                    history.pop(board);
+                } else if (history.size() == 1) {
+                    history.pop(board);
+                } else {
+                    Renderer.error("Nothing to undo.");
+                    return;
+                }
+            } else {
+                history.pop(board);
+            }
 
+            String turnLabel = "Player " + currentMark + "'s turn";
+            Renderer.gameScreen(board, scores, turnLabel, null);
+            Renderer.info("Move undone.");
+        }
 
+        /** Blocks until the user presses Enter. */
+        private void waitForEnter() {
+            Renderer.prompt("Press Enter to continue...");
+            scanner.nextLine();
+        }
+    }
 
+    // Main menu loop only.
 
+    /** Entry point. */
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ScoreTracker scores = new ScoreTracker();
+        GameEngine engine = new GameEngine(scanner, scores);
+
+        boolean running = true;
+        while (running) {
+            Renderer.mainMenu();
+            Renderer.prompt("Choice: ");
+            String input = scanner.nextLine().trim().toLowerCase();
+
+            GameMode mode = switch (input) {
+                case "1" -> GameMode.PVP;
+                case "2" -> GameMode.PVC;
+                case "3" -> GameMode.CVP;
+                case "4" -> GameMode.CVC;
+                default  -> null;
+            };
+
+            if (input.equals("q")) { running = false; continue; }
+            if (mode == null) { Renderer.error("Invalid choice."); Renderer.sleep(400); continue; }
+
+            Difficulty diff = Difficulty.EASY;
+            if (mode != GameMode.PVP) {
+                diff = promptDifficulty(scanner);
+                if (diff == null) continue;
+            }
+
+            boolean rematch = true;
+            while (rematch) {
+                engine.play(mode, diff);
+                Renderer.prompt("Rematch? (y/n): ");
+                String ans = scanner.nextLine().trim().toLowerCase();
+                rematch = ans.equals("y") || ans.equals("yes");
+            }
+        }
+
+        Renderer.clear();
+        System.out.println();
+        System.out.println("  Thanks for playing! Final scores:");
+        System.out.println();
+        Renderer.header(scores);
+        System.out.println();
+    }
+
+    /** Prompts for AI difficulty. Returns null to go back. */
+    private static Difficulty promptDifficulty(Scanner scanner) {
+        while (true) {
+            Renderer.difficultyMenu();
+            Renderer.prompt("Choice: ");
+            String input = scanner.nextLine().trim().toLowerCase();
+            switch (input) {
+                case "1": return Difficulty.EASY;
+                case "2": return Difficulty.MEDIUM;
+                case "3": return Difficulty.HARD;
+                case "4": return Difficulty.VERY_HARD;
+                case "5": return Difficulty.NIGHTMARE;
+                case "q": return null;
+                default: Renderer.error("Invalid choice.");
+            }
+        }
+    }
+
+}
