@@ -639,3 +639,70 @@ public class TicTacToe {
         }
     }
 
+    // Main menu loop only.
+
+    /** Entry point. */
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ScoreTracker scores = new ScoreTracker();
+        GameEngine engine = new GameEngine(scanner, scores);
+
+        boolean running = true;
+        while (running) {
+            Renderer.mainMenu();
+            Renderer.prompt("Choice: ");
+            String input = scanner.nextLine().trim().toLowerCase();
+
+            GameMode mode = switch (input) {
+                case "1" -> GameMode.PVP;
+                case "2" -> GameMode.PVC;
+                case "3" -> GameMode.CVP;
+                case "4" -> GameMode.CVC;
+                default  -> null;
+            };
+
+            if (input.equals("q")) { running = false; continue; }
+            if (mode == null) { Renderer.error("Invalid choice."); Renderer.sleep(400); continue; }
+
+            Difficulty diff = Difficulty.EASY;
+            if (mode != GameMode.PVP) {
+                diff = promptDifficulty(scanner);
+                if (diff == null) continue;
+            }
+
+            boolean rematch = true;
+            while (rematch) {
+                engine.play(mode, diff);
+                Renderer.prompt("Rematch? (y/n): ");
+                String ans = scanner.nextLine().trim().toLowerCase();
+                rematch = ans.equals("y") || ans.equals("yes");
+            }
+        }
+
+        Renderer.clear();
+        System.out.println();
+        System.out.println("  Thanks for playing! Final scores:");
+        System.out.println();
+        Renderer.header(scores);
+        System.out.println();
+    }
+
+    /** Prompts for AI difficulty. Returns null to go back. */
+    private static Difficulty promptDifficulty(Scanner scanner) {
+        while (true) {
+            Renderer.difficultyMenu();
+            Renderer.prompt("Choice: ");
+            String input = scanner.nextLine().trim().toLowerCase();
+            switch (input) {
+                case "1": return Difficulty.EASY;
+                case "2": return Difficulty.MEDIUM;
+                case "3": return Difficulty.HARD;
+                case "4": return Difficulty.VERY_HARD;
+                case "5": return Difficulty.NIGHTMARE;
+                case "q": return null;
+                default: Renderer.error("Invalid choice.");
+            }
+        }
+    }
+
+}
