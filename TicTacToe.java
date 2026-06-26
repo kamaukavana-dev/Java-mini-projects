@@ -639,26 +639,3 @@ public class TicTacToe {
         }
     }
 
-    // Main menu loop only.
-
-    /** Entry point. */
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        ScoreTracker scores = new ScoreTracker();
-        GameEngine engine = new GameEngine(scanner, scores);
-
-        boolean running = true;
-        while (running) {
-            Renderer.mainMenu();
-            Renderer.prompt("Choice: ");
-            String input = scanner.nextLine().trim().toLowerCase();
-
-            GameMode mode = switch (input) {
-                case "1" -> GameMode.PVP;
-                case "2" -> GameMode.PVC;
-                case "3" -> GameMode.CVP;
-                case "4" -> GameMode.CVC;
-                default  -> null;
-            };
-
-
