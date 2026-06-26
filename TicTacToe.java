@@ -688,21 +688,4 @@ public class TicTacToe {
     }
 
     /** Prompts for AI difficulty. Returns null to go back. */
-    private static Difficulty promptDifficulty(Scanner scanner) {
-        while (true) {
-            Renderer.difficultyMenu();
-            Renderer.prompt("Choice: ");
-            String input = scanner.nextLine().trim().toLowerCase();
-            switch (input) {
-                case "1": return Difficulty.EASY;
-                case "2": return Difficulty.MEDIUM;
-                case "3": return Difficulty.HARD;
-                case "4": return Difficulty.VERY_HARD;
-                case "5": return Difficulty.NIGHTMARE;
-                case "q": return null;
-                default: Renderer.error("Invalid choice.");
-            }
-        }
-    }
 
-}
