@@ -321,5 +321,388 @@ public class TicTacToe {
             return threats;
         }
 
+        /** Counts opponent moves that do not result in a forced loss. Fewer means more trapped. */
+        private static int countSafeResponses(Board board, char ai, char opp) {
+            int safe = 0;
+            for (int idx : ORDER) {
+                if (!board.isEmpty(idx)) continue;
+                Board sim = board.copy();
+                sim.set(idx, opp);
+                int score = minimax(sim, 0, true, ai, opp, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                if (score <= 0) safe++;
+            }
+            return safe;
+        }
+    }
 
+    // Renderer for all print logic.
 
+    static final class Renderer {
+        private static final int FLASH_COUNT = 3;
+        private static final int FLASH_MS    = 150;
+
+        private Renderer() {}
+
+        /** Clears the terminal. */
+        static void clear() {
+            // No-op in plain-text mode.
+        }
+
+        /** Renders the header with scores. */
+        static void header(ScoreTracker sc) {
+            System.out.println("  TIC TAC TOE");
+            System.out.println("  X: " + sc.xWins + "   Ties: " + sc.ties + "   O: " + sc.oWins);
+        }
+
+        /** Renders a status line below the header. */
+        static void status(String msg) {
+            System.out.println("  " + msg);
+            System.out.println();
+        }
+
+        /** Renders the full board with ASCII separators. */
+        static void board(Board board, int[] highlight) {
+            java.util.Set<Integer> hl = new java.util.HashSet<>();
+            if (highlight != null) for (int i : highlight) hl.add(i);
+
+            System.out.println("      1   2   3");
+            for (int row = 0; row < Board.SIZE; row++) {
+                System.out.print("  " + (row + 1) + " |");
+                for (int col = 0; col < Board.SIZE; col++) {
+                    int idx = Board.toIndex(row, col);
+                    char mark = board.get(idx);
+                    System.out.print(cellString(mark, idx, hl.contains(idx)));
+                    System.out.print("|");
+                }
+                System.out.println();
+                if (row < Board.SIZE - 1) {
+                    System.out.println("    ---+---+---");
+                }
+            }
+            System.out.println();
+        }
+
+        /** Returns the 3-char content string for a single cell. */
+        private static String cellString(char mark, int idx, boolean highlighted) {
+            if (mark == ' ') {
+                return " " + (idx + 1) + " ";
+            }
+            if (highlighted) {
+                return "[" + mark + "]";
+            }
+            return " " + mark + " ";
+        }
+
+        /** Renders the complete game screen: clear, header, status, board. */
+        static void gameScreen(Board board, ScoreTracker sc, String statusMsg, int[] highlight) {
+            clear();
+            header(sc);
+            status(statusMsg);
+            board(board, highlight);
+        }
+
+        /** Flashes the winning line 3 times then holds. */
+        static void flashWin(Board board, ScoreTracker sc, String statusMsg, int[] winLine) {
+            for (int i = 0; i < FLASH_COUNT; i++) {
+                gameScreen(board, sc, statusMsg, winLine);
+                sleep(FLASH_MS);
+                gameScreen(board, sc, statusMsg, null);
+                sleep(FLASH_MS);
+            }
+            // Hold final highlighted state
+            gameScreen(board, sc, statusMsg, winLine);
+        }
+
+        /** Prints the main menu. */
+        static void mainMenu() {
+            clear();
+            System.out.println("  TIC TAC TOE");
+            System.out.println();
+            System.out.println("  Select Game Mode:");
+            System.out.println("    [1] Player vs Player");
+            System.out.println("    [2] Player vs AI");
+            System.out.println("    [3] AI vs Player");
+            System.out.println("    [4] AI vs AI");
+            System.out.println("    [q] Quit");
+            System.out.println();
+        }
+
+        /** Prints the difficulty menu. */
+        static void difficultyMenu() {
+            clear();
+            System.out.println("  Select AI Difficulty:");
+            System.out.println("    [1] Easy      - random moves");
+            System.out.println("    [2] Medium    - wins/blocks, else random");
+            System.out.println("    [3] Hard      - minimax alpha-beta (unbeatable)");
+            System.out.println("    [4] Very Hard - fork traps, aggressive");
+            System.out.println("    [5] Nightmare - high pressure");
+            System.out.println("    [q] Back");
+            System.out.println();
+        }
+
+        /** Prints a prompt without newline. */
+        static void prompt(String msg) {
+            System.out.print("  > " + msg);
+        }
+
+        /** Prints an error line (no board redraw). */
+        static void error(String msg) {
+            System.out.println("  ERROR: " + msg);
+        }
+
+        /** Prints an info line. */
+        static void info(String msg) {
+            System.out.println("  " + msg);
+        }
+
+        /** Sleeps, swallowing interrupts. */
+        static void sleep(int ms) {
+            try { Thread.sleep(ms); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        }
+    }
+
+    // Enums.
+
+    enum GameMode {
+        PVP("Player vs Player"),
+        PVC("Player vs AI"),
+        CVP("AI vs Player"),
+        CVC("AI vs AI");
+        final String label;
+        GameMode(String l) { this.label = l; }
+    }
+
+    enum Difficulty {
+        EASY("Easy"),
+        MEDIUM("Medium"),
+        HARD("Hard"),
+        VERY_HARD("Very Hard"),
+        NIGHTMARE("Nightmare");
+
+        final String label;
+        Difficulty(String l) { this.label = l; }
+    }
+
+    // Game engine orchestrates the flow.
+
+    static final class GameEngine {
+        private final Scanner scanner;
+        private final ScoreTracker scores;
+
+        GameEngine(Scanner scanner, ScoreTracker scores) {
+            this.scanner = scanner;
+            this.scores = scores;
+        }
+
+        /** Plays a full game. Returns normally; caller handles rematch/menu. */
+        void play(GameMode mode, Difficulty diff) {
+            Board board = new Board();
+            MoveHistory history = new MoveHistory();
+
+            boolean xIsHuman = (mode == GameMode.PVP || mode == GameMode.PVC);
+            boolean oIsHuman = (mode == GameMode.PVP || mode == GameMode.CVP);
+            boolean undoAllowed = (mode != GameMode.CVC);
+
+            char current = 'X';
+
+            while (true) {
+                boolean humanTurn = (current == 'X') ? xIsHuman : oIsHuman;
+                String turnLabel = humanTurn
+                        ? AnsiColors.markColor(current) + "Player " + current + "'s turn" + AnsiColors.RESET
+                        : AnsiColors.markColor(current) + "AI " + current + " thinking..." + AnsiColors.RESET;
+
+                Renderer.gameScreen(board, scores, turnLabel, null);
+
+                int cellIndex;
+
+                if (humanTurn) {
+                    int result = humanMove(board, current, history, mode, diff, undoAllowed);
+                    if (result == -1) {
+                        // Quit to menu
+                        return;
+                    }
+                    cellIndex = result;
+                } else {
+                    if (mode == GameMode.CVC) Renderer.sleep(800);
+                    char opp = (current == 'X') ? 'O' : 'X';
+                    cellIndex = AIPlayer.chooseMove(board, current, opp, diff);
+                    int r = cellIndex / Board.SIZE + 1;
+                    int c = cellIndex % Board.SIZE + 1;
+                    Renderer.info("AI " + current + " plays row " + r + ", col " + c);
+                }
+
+                board.set(cellIndex, current);
+                history.push(current, cellIndex);
+
+                // Check win
+                int[] winLine = board.checkWin(current);
+                if (winLine != null) {
+                    scores.recordWin(current);
+                    String msg = (((current == 'X') ? xIsHuman : oIsHuman) ? "Player" : "AI") +
+                            " " + current + " wins!";
+                    Renderer.flashWin(board, scores, msg, winLine);
+                    waitForEnter();
+                    return;
+                }
+
+                // Check draw
+                if (board.isFull()) {
+                    scores.recordTie();
+                    String msg = "It's a tie!";
+                    Renderer.gameScreen(board, scores, msg, null);
+                    waitForEnter();
+                    return;
+                }
+
+                current = (current == 'X') ? 'O' : 'X';
+            }
+        }
+
+        /**
+         * Prompts the human for row then col (1-3 each).
+         * Returns flat cell index (0-8), -1 for quit.
+         * Handles 'u' for undo, invalid input errors without board redraw.
+         */
+        private int humanMove(Board board, char mark, MoveHistory history,
+                              GameMode mode, Difficulty diff, boolean undoAllowed) {
+            while (true) {
+                // Prompt for row
+                String undoHint = undoAllowed ? ", 'u' undo" : "";
+                Renderer.prompt("Player " + mark + " - row (1-3" + undoHint + ", 'q' quit): ");
+                String rowInput = scanner.nextLine().trim().toLowerCase();
+
+                if (rowInput.equals("q")) return -1;
+
+                if (rowInput.equals("u")) {
+                    if (!undoAllowed) { Renderer.error("Undo not available in this mode."); continue; }
+                    if (!history.canUndo()) { Renderer.error("Nothing to undo."); continue; }
+                    performUndo(board, history, mode, diff, mark);
+                    continue;
+                }
+
+                int row;
+                try { row = Integer.parseInt(rowInput); }
+                catch (NumberFormatException e) { Renderer.error("Enter a number 1-3."); continue; }
+                if (row < 1 || row > 3) { Renderer.error("Row must be 1-3."); continue; }
+
+                // Prompt for col
+                Renderer.prompt("Player " + mark + " - col (1-3): ");
+                String colInput = scanner.nextLine().trim().toLowerCase();
+
+                if (colInput.equals("q")) return -1;
+
+                if (colInput.equals("u")) {
+                    if (!undoAllowed) { Renderer.error("Undo not available in this mode."); continue; }
+                    if (!history.canUndo()) { Renderer.error("Nothing to undo."); continue; }
+                    performUndo(board, history, mode, diff, mark);
+                    continue;
+                }
+
+                int col;
+                try { col = Integer.parseInt(colInput); }
+                catch (NumberFormatException e) { Renderer.error("Enter a number 1-3."); continue; }
+                if (col < 1 || col > 3) { Renderer.error("Column must be 1-3."); continue; }
+
+                int idx = Board.toIndex(row - 1, col - 1);
+                if (!board.isEmpty(idx)) { Renderer.error("Cell (" + row + "," + col + ") is taken."); continue; }
+
+                return idx;
+            }
+        }
+
+        /** Performs undo. In PvC/CvP, undoes two moves (AI + human). */
+        private void performUndo(Board board, MoveHistory history,
+                                 GameMode mode, Difficulty diff, char currentMark) {
+            if (mode == GameMode.PVC || mode == GameMode.CVP) {
+                if (history.size() >= 2) {
+                    history.pop(board);
+                    history.pop(board);
+                } else if (history.size() == 1) {
+                    history.pop(board);
+                } else {
+                    Renderer.error("Nothing to undo.");
+                    return;
+                }
+            } else {
+                history.pop(board);
+            }
+
+            String turnLabel = "Player " + currentMark + "'s turn";
+            Renderer.gameScreen(board, scores, turnLabel, null);
+            Renderer.info("Move undone.");
+        }
+
+        /** Blocks until the user presses Enter. */
+        private void waitForEnter() {
+            Renderer.prompt("Press Enter to continue...");
+            scanner.nextLine();
+        }
+    }
+
+    // Main menu loop only.
+
+    /** Entry point. */
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ScoreTracker scores = new ScoreTracker();
+        GameEngine engine = new GameEngine(scanner, scores);
+
+        boolean running = true;
+        while (running) {
+            Renderer.mainMenu();
+            Renderer.prompt("Choice: ");
+            String input = scanner.nextLine().trim().toLowerCase();
+
+            GameMode mode = switch (input) {
+                case "1" -> GameMode.PVP;
+                case "2" -> GameMode.PVC;
+                case "3" -> GameMode.CVP;
+                case "4" -> GameMode.CVC;
+                default  -> null;
+            };
+
+            if (input.equals("q")) { running = false; continue; }
+            if (mode == null) { Renderer.error("Invalid choice."); Renderer.sleep(400); continue; }
+
+            Difficulty diff = Difficulty.EASY;
+            if (mode != GameMode.PVP) {
+                diff = promptDifficulty(scanner);
+                if (diff == null) continue;
+            }
+
+            boolean rematch = true;
+            while (rematch) {
+                engine.play(mode, diff);
+                Renderer.prompt("Rematch? (y/n): ");
+                String ans = scanner.nextLine().trim().toLowerCase();
+                rematch = ans.equals("y") || ans.equals("yes");
+            }
+        }
+
+        Renderer.clear();
+        System.out.println();
+        System.out.println("  Thanks for playing! Final scores:");
+        System.out.println();
+        Renderer.header(scores);
+        System.out.println();
+    }
+
+    /** Prompts for AI difficulty. Returns null to go back. */
+    private static Difficulty promptDifficulty(Scanner scanner) {
+        while (true) {
+            Renderer.difficultyMenu();
+            Renderer.prompt("Choice: ");
+            String input = scanner.nextLine().trim().toLowerCase();
+            switch (input) {
+                case "1": return Difficulty.EASY;
+                case "2": return Difficulty.MEDIUM;
+                case "3": return Difficulty.HARD;
+                case "4": return Difficulty.VERY_HARD;
+                case "5": return Difficulty.NIGHTMARE;
+                case "q": return null;
+                default: Renderer.error("Invalid choice.");
+            }
+        }
+    }
+
+}
