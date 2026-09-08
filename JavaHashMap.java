@@ -1,27 +1,16 @@
-import  java.util.HashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 
+public class EmployeeReport {
 
-public class JavaHashMap {
-    public static void main(String[] args) {
-        HashMap<String,String> StudentInfo = new HashMap<String,String>();
-        StudentInfo.put("Kelvin","grade 9");
-        StudentInfo.put("Richard","grade 8");
-        StudentInfo.put("Daniel","grade 7");
-        StudentInfo.put("Jefferson","grade 6");
-        StudentInfo.put("Richard","grade 5");//duplicate key
-        StudentInfo.put("Samson","grade 9");//duplicate value
-        //print key sets only
-        for(String name : StudentInfo.keySet()){
-            System.out.println(name);
+    public static List<Employee> filterEmployees(List<Employee> list, Predicate<Employee> filter) {
+        List<Employee> result = new ArrayList<>();
+        for (Employee e : list) {
+            if (filter.test(e)) {
+                result.add(e);
+            }
         }
-        //print values of the keysets only
-        for(String name : StudentInfo.values()){
-            System.out.println(name);
-        }
-        //print both the keysets and values
-        for(String name : StudentInfo.keySet()){
-            System.out.println(name+" : "+StudentInfo.get(name));
-        }
-
+        return result;
     }
-}
