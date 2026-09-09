@@ -30,16 +30,7 @@ public class EmployeeReport {
         System.out.println("\nHigh earners (salary > 70000):");
         highEarners.forEach(e -> System.out.println("  " + e));
 
-        // 3. Combine predicates: Engineering AND high earner using Predicate composition
-        Predicate<Employee> inEngineering = e -> "Engineering".equals(e.getDepartment());
-        Predicate<Employee> highEarner = e -> e.getSalary() > 70000;
 
-        List<Employee> seniorEngineers = employees.stream()
-                .filter(inEngineering.and(highEarner))
-                .toList();
-
-        System.out.println("\nSenior Engineers (Engineering + salary > 70000):");
-        seniorEngineers.forEach(e -> System.0ut.println("  " + e));
 
 
 
