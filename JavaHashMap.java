@@ -14,11 +14,51 @@ public class EmployeeReport {
                 new Employee("Frank", "Marketing", 74000, 6)
         );
 
+        // 1. Find all employees in Engineering
+        List<Employee> engineers = employees.stream()
+                .filter(e -> "Engineering".equals(e.getDepartment()))
+                .toList();
 
+        System.out.println("Engineering team:");
+        engineers.forEach(e -> System.out.println("  " + e));
 
+        // 2. Find employees earning over 70000
+        List<Employee> highEarners = employees.stream()
+                .filter(e -> e.getSalary() > 70000)
+                .toList();
 
+        System.out.println("\nHigh earners (salary > 70000):");
+        highEarners.forEach(e -> System.out.println("  " + e));
 
+        // 3. Combine predicates: Engineering AND high earner using Predicate composition
+        Predicate<Employee> inEngineering = e -> "Engineering".equals(e.getDepartment());
+        Predicate<Employee> highEarner = e -> e.getSalary() > 70000;
 
+        List<Employee> seniorEngineers = employees.stream()
+                .filter(inEngineering.and(highEarner))
+                .toList();
 
+        System.out.println("\nSenior Engineers (Engineering + salary > 70000):");
+        seniorEngineers.forEach(e -> System.0ut.println("  " + e));
 
+        // 4. Get a list of all names (using method references)
+        List<String> names = employees.stream()
+                .map(Employee::getName)
+                .toList();
 
+        System.out.println("\nAll employee names: " + names);
+
+        // 5. Get formatted summary strings
+        List<String> summaries = employees.stream()
+                .map(e -> String.format("%s earns $%.1f with %d years of experience",
+                        e.getName(), e.getSalary(), e.getYearsExperience()))
+                .toList();
+
+        System.out.println("\nEmployee summaries:");
+        summaries.forEach(s -> System.out.println("  " + s));
+
+        // 6. Full roster print
+        System.out.println("\nFull employee roster:");
+        employees.forEach(e -> System.out.println("  " + e));
+    }
+}
