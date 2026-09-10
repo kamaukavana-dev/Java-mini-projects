@@ -93,26 +93,7 @@ public class JdbcDemo {
         }
     }
 
-    // --------------------------------------------------------- DML: select
 
-    static void readStudents(Connection conn) throws SQLException {
-        String sql = "SELECT id, name, email, grade FROM students ORDER BY grade DESC";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            System.out.printf("%-4s  %-10s  %-25s  %s%n", "ID", "Name", "Email", "Grade");
-            System.out.println("-".repeat(55));
-
-            while (rs.next()) {
-                System.out.printf("%-4d  %-10s  %-25s  %.1f%n",
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getDouble("grade"));
-            }
-        }
-    }
 
 
 
