@@ -51,22 +51,7 @@ public class JdbcDemo {
         }
     }
 
-    // --------------------------------------------------------- DDL: create
 
-    static void createTable(Connection conn) throws SQLException {
-        String sql = """
-                CREATE TABLE students (
-                    id    INT          PRIMARY KEY AUTO_INCREMENT,
-                    name  VARCHAR(100) NOT NULL,
-                    email VARCHAR(150) UNIQUE,
-                    grade DOUBLE
-                )
-                """;
-        try (Statement st = conn.createStatement()) {
-            st.execute(sql);
-            System.out.println("Table 'students' created.");
-        }
-    }
 
 
 
