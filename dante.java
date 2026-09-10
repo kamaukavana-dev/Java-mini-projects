@@ -114,26 +114,7 @@ public class JdbcDemo {
         }
     }
 
-    static void readStudentsAboveGrade(Connection conn, double threshold) throws SQLException {
-        String sql = "SELECT id, name, grade FROM students WHERE grade > ? ORDER BY grade DESC";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setDouble(1, threshold);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    System.out.printf("  %s (%.1f)%n",
-                            rs.getString("name"),
-                            rs.getDouble("grade"));
-                }
-            }
-        }
-    }
-
-    // --------------------------------------------------------- DML: update
-
-    static void updateGrade(Connection conn, int studentId, double newGrade) throws SQLException {
-        String sql = "UPDATE students SET grade = ? WHERE id = ?";
 
 
 
