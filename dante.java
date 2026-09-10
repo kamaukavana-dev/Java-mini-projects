@@ -23,33 +23,6 @@ public class JdbcDemo {
     static final String USERNAME = "sa";
     static final String PASSWORD = "";
 
-    // ------------------------------------------------------------------ main
-
-    public static void main(String[] args) {
-        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
-            System.out.println("Connected to: " + conn.getMetaData().getDatabaseProductName());
-
-            createTable(conn);
-            insertStudents(conn);
-
-            System.out.println("\n--- All students (initial) ---");
-            readStudents(conn);
-
-            updateGrade(conn, 2, 97.0);
-            System.out.println("\n--- After updating student 2's grade to 97.0 ---");
-            readStudents(conn);
-
-            deleteStudent(conn, 3);
-            System.out.println("\n--- After deleting student 3 ---");
-            readStudents(conn);
-
-            System.out.println("\n--- Students with grade above 85 ---");
-            readStudentsAboveGrade(conn, 85.0);
-
-        } catch (SQLException e) {
-            System.err.println("Database error: " + e.getMessage());
-        }
-    }
 
 
 
