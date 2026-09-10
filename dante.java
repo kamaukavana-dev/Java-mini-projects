@@ -68,30 +68,7 @@ public class JdbcDemo {
         }
     }
 
-    // --------------------------------------------------------- DML: insert
 
-    static void insertStudents(Connection conn) throws SQLException {
-        String sql = "INSERT INTO students (name, email, grade) VALUES (?, ?, ?)";
-
-        Object[][] rows = {
-                { "Alice",   "alice@example.com",   91.5 },
-                { "Bob",     "bob@example.com",      78.0 },
-                { "Charlie", "charlie@example.com",  85.5 },
-                { "Diana",   "diana@example.com",    95.0 },
-                { "Evan",    "evan@example.com",     62.0 },
-        };
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            for (Object[] row : rows) {
-                ps.setString(1, (String) row[0]);
-                ps.setString(2, (String) row[1]);
-                ps.setDouble(3, (double)  row[2]);
-                ps.addBatch();
-            }
-            int[] counts = ps.executeBatch();
-            System.out.println(counts.length + " students inserted.");
-        }
-    }
 
 
 
