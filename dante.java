@@ -130,16 +130,5 @@ public class JdbcDemo {
         }
     }
 
-    // --------------------------------------------------------- DML: update
 
-    static void updateGrade(Connection conn, int studentId, double newGrade) throws SQLException {
-        String sql = "UPDATE students SET grade = ? WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setDouble(1, newGrade);
-            ps.setInt(2, studentId);
-            int affected = ps.executeUpdate();
-            System.out.printf("Grade updated — %d row(s) affected.%n", affected);
-        }
-    }
 
