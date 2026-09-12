@@ -143,15 +143,3 @@ public class JdbcDemo {
         }
     }
 
-    // --------------------------------------------------------- DML: delete
-
-    static void deleteStudent(Connection conn, int studentId) throws SQLException {
-        String sql = "DELETE FROM students WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, studentId);
-            int affected = ps.executeUpdate();
-            System.out.printf("Student deleted — %d row(s) affected.%n", affected);
-        }
-    }
-}
