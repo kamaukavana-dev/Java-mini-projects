@@ -51,5 +51,107 @@ public class JdbcDemo {
         }
     }
 
+    // --------------------------------------------------------- DDL: create
 
+    static void createTable(Connection conn) throws SQLException {
+        String sql = """
+                CREATE TABLE students (
+                    id    INT          PRIMARY KEY AUTO_INCREMENT,
+                    name  VARCHAR(100) NOT NULL,
+                    email VARCHAR(150) UNIQUE,
+                    grade DOUBLE
+                )
+                """;
+        try (Statement st = conn.createStatement()) {
+            st.execute(sql);
+            System.out.println("Table 'students' created.");
+        }
+    }
 
+    // --------------------------------------------------------- DML: insert
+
+    static void insertStudents(Connection conn) throws SQLException {
+        String sql = "INSERT INTO students (name, email, grade) VALUES (?, ?, ?)";
+
+        Object[][] rows = {
+                { "Alice",   "alice@example.com",   91.5 },
+                { "Bob",     "bob@example.com",      78.0 },
+                { "Charlie", "charlie@example.com",  85.5 },
+                { "Diana",   "diana@example.com",    95.0 },
+                { "Evan",    "evan@example.com",     62.0 },
+        };
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            for (Object[] row : rows) {
+                ps.setString(1, (String) row[0]);
+                ps.setString(2, (String) row[1]);
+                ps.setDouble(3, (double)  row[2]);
+                ps.addBatch();
+            }
+            int[] counts = ps.executeBatch();
+            System.out.println(counts.length + " students inserted.");
+        }
+    }
+
+    // --------------------------------------------------------- DML: select
+
+    static void readStudents(Connection conn) throws SQLException {
+        String sql = "SELECT id, name, email, grade FROM students ORDER BY grade DESC";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            System.out.printf("%-4s  %-10s  %-25s  %s%n", "ID", "Name", "Email", "Grade");
+            System.out.println("-".repeat(55));
+
+            while (rs.next()) {
+                System.out.printf("%-4d  %-10s  %-25s  %.1f%n",
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getDouble("grade"));
+            }
+        }
+    }
+
+    static void readStudentsAboveGrade(Connection conn, double threshold) throws SQLException {
+        String sql = "SELECT id, name, grade FROM students WHERE grade > ? ORDER BY grade DESC";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, threshold);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    System.out.printf("  %s (%.1f)%n",
+                            rs.getString("name"),
+                            rs.getDouble("grade"));
+                }
+            }
+        }
+    }
+
+    // --------------------------------------------------------- DML: update
+
+    static void updateGrade(Connection conn, int studentId, double newGrade) throws SQLException {
+        String sql = "UPDATE students SET grade = ? WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, newGrade);
+            ps.setInt(2, studentId);
+            int affected = ps.executeUpdate();
+            System.out.printf("Grade updated — %d row(s) affected.%n", affected);
+        }
+    }
+
+    // --------------------------------------------------------- DML: delete
+
+    static void deleteStudent(Connection conn, int studentId) throws SQLException {
+        String sql = "DELETE FROM students WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            int affected = ps.executeUpdate();
+            System.out.printf("Student deleted — %d row(s) affected.%n", affected);
+        }
+    }
+}
