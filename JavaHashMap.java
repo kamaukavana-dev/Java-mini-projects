@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 public class EmployeeReport {
 
     public static void main(String[] args) {
-        // Use an immutable list directly
+
         List<Employee> employees = List.of(
                 new Employee("Alice", "Engineering", 95000, 7),
                 new Employee("Bob", "Marketing", 62000, 3),
@@ -30,35 +30,24 @@ public class EmployeeReport {
         System.out.println("\nHigh earners (salary > 70000):");
         highEarners.forEach(e -> System.out.println("  " + e));
 
-        // 3. Combine predicates: Engineering AND high earner using Predicate composition
-        Predicate<Employee> inEngineering = e -> "Engineering".equals(e.getDepartment());
-        Predicate<Employee> highEarner = e -> e.getSalary() > 70000;
+        // 3. Combine predicates: Engineering AND high earner
+        Predicate<Employee> inEngineering =
+                e -> "Engineering".equals(e.getDepartment());
+
+        Predicate<Employee> highEarner =
+                e -> e.getSalary() > 70000;
 
         List<Employee> seniorEngineers = employees.stream()
                 .filter(inEngineering.and(highEarner))
                 .toList();
 
         System.out.println("\nSenior Engineers (Engineering + salary > 70000):");
-        seniorEngineers.forEach(e -> System.0ut.println("  " + e));
+        seniorEngineers.forEach(e -> System.out.println("  " + e));
 
-        // 4. Get a list of all names (using method references)
+        // 4. Get a list of all names
         List<String> names = employees.stream()
                 .map(Employee::getName)
                 .toList();
 
         System.out.println("\nAll employee names: " + names);
 
-        // 5. Get formatted summary strings
-        List<String> summaries = employees.stream()
-                .map(e -> String.format("%s earns $%.1f with %d years of experience",
-                        e.getName(), e.getSalary(), e.getYearsExperience()))
-                .toList();
-
-        System.out.println("\nEmployee summaries:");
-        summaries.forEach(s -> System.out.println("  " + s));
-
-        // 6. Full roster print
-        System.out.println("\nFull employee roster:");
-        employees.forEach(e -> System.out.println("  " + e));
-    }
-}
