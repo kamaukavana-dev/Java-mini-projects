@@ -13,10 +13,5 @@ public class Employee {
     }
 
 
-    @Override
-    public String toString() {
-        return name + " | " + department + " | $" + salary + " | "
-                + yearsExperience + " years";
-    }
-}
+
 
