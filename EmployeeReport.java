@@ -44,10 +44,3 @@ public class EmployeeReport {
         System.out.println("\nSenior Engineers (Engineering + salary > 70000):");
         seniorEngineers.forEach(e -> System.out.println("  " + e));
 
-        // 4. Get a list of all names
-        List<String> names = employees.stream()
-                .map(Employee::getName)
-                .toList();
-
-        System.out.println("\nAll employee names: " + names);
-
