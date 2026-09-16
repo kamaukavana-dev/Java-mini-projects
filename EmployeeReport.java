@@ -14,21 +14,7 @@ public class EmployeeReport {
                 new Employee("Frank", "Marketing", 74000, 6)
         );
 
-        // 1. Find all employees in Engineering
-        List<Employee> engineers = employees.stream()
-                .filter(e -> "Engineering".equals(e.getDepartment()))
-                .toList();
 
-        System.out.println("Engineering team:");
-        engineers.forEach(e -> System.out.println("  " + e));
-
-        // 2. Find employees earning over 70000
-        List<Employee> highEarners = employees.stream()
-                .filter(e -> e.getSalary() > 70000)
-                .toList();
-
-        System.out.println("\nHigh earners (salary > 70000):");
-        highEarners.forEach(e -> System.out.println("  " + e));
 
 
 
