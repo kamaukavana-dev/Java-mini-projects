@@ -129,15 +129,7 @@ public class Unicode {
                 + normalizedComposed.equals(normalizedDecomposed));
 
 
-        // --------------------------------------------------
-        // 9. Convert Unicode code point -> String
-        // --------------------------------------------------
-        int earth = 0x1F30D;
 
-        String earthCharacter = new String(Character.toChars(earth));
-
-        System.out.println("\n9. Code point -> character:");
-        System.out.println("U+1F30D = " + earthCharacter);
 
 
 
