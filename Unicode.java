@@ -40,16 +40,6 @@ public class Unicode {
         });
 
 
-        // --------------------------------------------------
-        // 4. Why char is not always enough
-        // --------------------------------------------------
-        String emoji = "🚀";
-
-        System.out.println("\n4. char vs code point:");
-
-        System.out.println("String: " + emoji);
-        System.out.println("String length: " + emoji.length());
-        System.out.println("Code point count: " + emoji.codePointCount(0, emoji.length()));
 
 
 
