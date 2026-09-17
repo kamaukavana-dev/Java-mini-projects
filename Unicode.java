@@ -15,13 +15,7 @@ public class Unicode {
         System.out.printf("Code point: U+%04X%n", (int) romanEight);
 
 
-        // --------------------------------------------------
-        // 2. Unicode characters from different scripts
-        // --------------------------------------------------
-        String multilingual = "English | 日本語 | العربية | हिन्दी | Ελληνικά | Kiswahili";
 
-        System.out.println("\n2. Multiple writing systems:");
-        System.out.println(multilingual);
 
 
 
