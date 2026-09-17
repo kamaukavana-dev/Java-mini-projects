@@ -69,18 +69,7 @@ public class Unicode {
         );
 
 
-        // --------------------------------------------------
-        // 6. Unicode properties
-        // --------------------------------------------------
-        int codePoint = 'A';
 
-        System.out.println("\n6. Unicode character properties:");
-
-        System.out.println("Character: " + (char) codePoint);
-        System.out.println("Is letter: " + Character.isLetter(codePoint));
-        System.out.println("Is digit: " + Character.isDigit(codePoint));
-        System.out.println("Is uppercase: " + Character.isUpperCase(codePoint));
-        System.out.println("Unicode type: " + Character.getType(codePoint));
 
 
 
