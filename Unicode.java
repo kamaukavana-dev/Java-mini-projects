@@ -24,20 +24,7 @@ public class Unicode {
         System.out.println(multilingual);
 
 
-        // --------------------------------------------------
-        // 3. Unicode code points
-        // --------------------------------------------------
-        String text = "Java ☕ 🚀";
 
-        System.out.println("\n3. Code points:");
-
-        text.codePoints().forEach(codePoint -> {
-            System.out.printf(
-                    "Character: %-3s | Code point: U+%04X%n",
-                    new String(Character.toChars(codePoint)),
-                    codePoint
-            );
-        });
 
 
 
