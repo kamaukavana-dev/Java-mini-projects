@@ -83,26 +83,7 @@ public class Unicode {
         System.out.println("Unicode type: " + Character.getType(codePoint));
 
 
-        // --------------------------------------------------
-        // 7. Iterate correctly over Unicode code points
-        // --------------------------------------------------
-        String symbols = "A🚀B☕C🌍";
 
-        System.out.println("\n7. Correct Unicode iteration:");
-
-        for (int i = 0; i < symbols.length(); ) {
-
-            int cp = symbols.codePointAt(i);
-
-            System.out.printf(
-                    "Index %-2d | Character %-2s | U+%04X%n",
-                    i,
-                    new String(Character.toChars(cp)),
-                    cp
-            );
-
-            i += Character.charCount(cp);
-        }
 
 
 
