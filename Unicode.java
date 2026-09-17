@@ -140,18 +140,7 @@ public class Unicode {
         System.out.println("U+1F30D = " + earthCharacter);
 
 
-        // --------------------------------------------------
-        // 10. Convert character -> Unicode code point
-        // --------------------------------------------------
-        String character = "🌍";
 
-        int extractedCodePoint = character.codePointAt(0);
-
-        System.out.printf(
-                "\n10. Character -> code point:%n%s = U+%04X%n",
-                character,
-                extractedCodePoint
-        );
 
 
 
