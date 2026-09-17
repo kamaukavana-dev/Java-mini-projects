@@ -105,28 +105,7 @@ public class Unicode {
         }
 
 
-        // --------------------------------------------------
-        // 8. Unicode normalization
-        // --------------------------------------------------
-        String composed = "é";
-        String decomposed = "e\u0301";
 
-        System.out.println("\n8. Unicode normalization:");
-
-        System.out.println("Composed:   " + composed);
-        System.out.println("Decomposed: " + decomposed);
-
-        System.out.println("Equal before normalization: "
-                + composed.equals(decomposed));
-
-        String normalizedComposed =
-                Normalizer.normalize(composed, Normalizer.Form.NFC);
-
-        String normalizedDecomposed =
-                Normalizer.normalize(decomposed, Normalizer.Form.NFC);
-
-        System.out.println("Equal after NFC normalization: "
-                + normalizedComposed.equals(normalizedDecomposed));
 
 
 
