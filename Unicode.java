@@ -52,21 +52,7 @@ public class Unicode {
         System.out.println("Code point count: " + emoji.codePointCount(0, emoji.length()));
 
 
-        // --------------------------------------------------
-        // 5. Surrogate pair inspection
-        // --------------------------------------------------
-        System.out.println("\n5. Surrogate pair:");
 
-        char high = emoji.charAt(0);
-        char low = emoji.charAt(1);
-
-        System.out.printf("First char: U+%04X%n", (int) high);
-        System.out.printf("Second char: U+%04X%n", (int) low);
-
-        System.out.println(
-                "Combined code point: U+"
-                        + Integer.toHexString(Character.toCodePoint(high, low)).toUpperCase()
-        );
 
 
 
