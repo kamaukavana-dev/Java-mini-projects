@@ -152,27 +152,3 @@ public class Unicode {
                 character,
                 extractedCodePoint
         );
-
-
-        // --------------------------------------------------
-        // 11. Count Unicode code points
-        // --------------------------------------------------
-        String sentence = "Java 🚀 is powerful ☕";
-
-        long count = sentence.codePoints().count();
-
-        System.out.println("\n11. Unicode-aware length:");
-        System.out.println("String: " + sentence);
-        System.out.println("UTF-16 code units: " + sentence.length());
-        System.out.println("Unicode code points: " + count);
-
-
-        // --------------------------------------------------
-        // 12. Unicode code point array
-        // --------------------------------------------------
-        int[] codePoints = sentence.codePoints().toArray();
-
-        System.out.println("\n12. Code point array:");
-        System.out.println(Arrays.toString(codePoints));
-    }
-}
