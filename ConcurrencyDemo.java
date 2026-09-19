@@ -99,40 +99,23 @@ public class ConcurrencyDemo {
         }
 
 
-
-
         // --------------------------------------------------
-        // 5. CompletableFuture
+        // 4. Creating virtual threads directly
         // --------------------------------------------------
 
-        System.out.println("\n=== COMPLETABLE FUTURE ===");
+        System.out.println("\n=== DIRECT VIRTUAL THREAD ===");
 
-        CompletableFuture<String> user =
-                CompletableFuture.supplyAsync(() -> {
+        Thread virtualThread = Thread.startVirtualThread(() -> {
 
-                    simulateTask("Loading user");
+            System.out.println(
+                    "Running inside: " +
+                            Thread.currentThread()
+            );
 
-                    return "Daniel";
+        });
 
-                });
+        virtualThread.join();
 
-        CompletableFuture<String> orders =
-                CompletableFuture.supplyAsync(() -> {
-
-                    simulateTask("Loading orders");
-
-                    return "5 orders";
-
-                });
-
-        CompletableFuture<String> result =
-                user.thenCombine(
-                        orders,
-                        (username, orderCount) ->
-                                username + " has " + orderCount
-                );
-
-        System.out.println(result.get());
 
 
         // --------------------------------------------------
