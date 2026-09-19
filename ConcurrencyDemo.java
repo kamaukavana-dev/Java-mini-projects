@@ -151,35 +151,48 @@ public class ConcurrencyDemo {
         System.out.println(result.get());
 
 
+        // --------------------------------------------------
+        // 6. Concurrent tasks with virtual threads
+        // --------------------------------------------------
 
-    // --------------------------------------------------
-    // Simulates I/O-bound work
-    // --------------------------------------------------
+        System.out.println("\n=== CONCURRENT API-STYLE TASKS ===");
 
-    static void simulateTask(String taskName) {
+        try (ExecutorService executor =
+                     Executors.newVirtualThreadPerTaskExecutor()) {
 
-        try {
+            Future<String> database =
+                    executor.submit(() -> {
 
-            System.out.println(
-                    taskName +
-                            " started on " +
-                            Thread.currentThread()
-            );
+                        simulateTask("Database query");
 
-            Thread.sleep(1000);
+                        return "Database: User data";
 
-            System.out.println(
-                    taskName +
-                            " finished"
-            );
+                    });
 
-        } catch (InterruptedException e) {
+            Future<String> externalApi =
+                    executor.submit(() -> {
 
-            Thread.currentThread().interrupt();
+                        simulateTask("External API");
 
-            System.err.println(
-                    taskName + " was interrupted"
-            );
+                        return "API: Payment data";
+
+                    });
+
+            Future<String> cache =
+                    executor.submit(() -> {
+
+                        simulateTask("Redis cache");
+
+                        return "Cache: Session data";
+
+                    });
+
+            System.out.println(database.get());
+            System.out.println(externalApi.get());
+            System.out.println(cache.get());
         }
+
+        System.out.println("\nProgram finished.");
     }
-}
+
+
