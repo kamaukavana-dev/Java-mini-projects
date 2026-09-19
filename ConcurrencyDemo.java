@@ -117,50 +117,39 @@ public class ConcurrencyDemo {
         virtualThread.join();
 
 
-
         // --------------------------------------------------
-        // 6. Concurrent tasks with virtual threads
+        // 5. CompletableFuture
         // --------------------------------------------------
 
-        System.out.println("\n=== CONCURRENT API-STYLE TASKS ===");
+        System.out.println("\n=== COMPLETABLE FUTURE ===");
 
-        try (ExecutorService executor =
-                     Executors.newVirtualThreadPerTaskExecutor()) {
+        CompletableFuture<String> user =
+                CompletableFuture.supplyAsync(() -> {
 
-            Future<String> database =
-                    executor.submit(() -> {
+                    simulateTask("Loading user");
 
-                        simulateTask("Database query");
+                    return "Daniel";
 
-                        return "Database: User data";
+                });
 
-                    });
+        CompletableFuture<String> orders =
+                CompletableFuture.supplyAsync(() -> {
 
-            Future<String> externalApi =
-                    executor.submit(() -> {
+                    simulateTask("Loading orders");
 
-                        simulateTask("External API");
+                    return "5 orders";
 
-                        return "API: Payment data";
+                });
 
-                    });
+        CompletableFuture<String> result =
+                user.thenCombine(
+                        orders,
+                        (username, orderCount) ->
+                                username + " has " + orderCount
+                );
 
-            Future<String> cache =
-                    executor.submit(() -> {
+        System.out.println(result.get());
 
-                        simulateTask("Redis cache");
-
-                        return "Cache: Session data";
-
-                    });
-
-            System.out.println(database.get());
-            System.out.println(externalApi.get());
-            System.out.println(cache.get());
-        }
-
-        System.out.println("\nProgram finished.");
-    }
 
 
     // --------------------------------------------------
