@@ -63,24 +63,42 @@ public class ConcurrencyDemo {
         }
 
 
-
-
         // --------------------------------------------------
-        // 4. Creating virtual threads directly
+        // 3. Virtual threads
         // --------------------------------------------------
 
-        System.out.println("\n=== DIRECT VIRTUAL THREAD ===");
+        System.out.println("\n=== VIRTUAL THREADS ===");
 
-        Thread virtualThread = Thread.startVirtualThread(() -> {
+        try (ExecutorService virtualExecutor =
+                     Executors.newVirtualThreadPerTaskExecutor()) {
 
-            System.out.println(
-                    "Running inside: " +
-                            Thread.currentThread()
-            );
+            List<Future<String>> results = new ArrayList<>();
 
-        });
+            for (int i = 1; i <= 20; i++) {
 
-        virtualThread.join();
+                int taskId = i;
+
+                Future<String> future =
+                        virtualExecutor.submit(() -> {
+
+                            simulateTask(
+                                    "Virtual Task " + taskId
+                            );
+
+                            return "Virtual Task " + taskId +
+                                    " completed by " +
+                                    Thread.currentThread();
+                        });
+
+                results.add(future);
+            }
+
+            for (Future<String> result : results) {
+                System.out.println(result.get());
+            }
+        }
+
+
 
 
         // --------------------------------------------------
