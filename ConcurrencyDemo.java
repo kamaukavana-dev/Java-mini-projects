@@ -1,0 +1,205 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
+
+public class ConcurrencyDemo {
+
+
+
+        // --------------------------------------------------
+        // 2. ExecutorService with platform threads
+        // --------------------------------------------------
+
+        System.out.println("\n=== FIXED THREAD POOL ===");
+
+        try (ExecutorService executor =
+                     Executors.newFixedThreadPool(4)) {
+
+            List<Future<String>> results = new ArrayList<>();
+
+            for (int i = 1; i <= 8; i++) {
+
+                int taskId = i;
+
+                Future<String> future = executor.submit(() -> {
+
+                    simulateTask("Task " + taskId);
+
+                    return "Task " + taskId +
+                            " completed by " +
+                            Thread.currentThread();
+                });
+
+                results.add(future);
+            }
+
+            for (Future<String> result : results) {
+                System.out.println(result.get());
+            }
+        }
+
+
+        // --------------------------------------------------
+        // 3. Virtual threads
+        // --------------------------------------------------
+
+        System.out.println("\n=== VIRTUAL THREADS ===");
+
+        try (ExecutorService virtualExecutor =
+                     Executors.newVirtualThreadPerTaskExecutor()) {
+
+            List<Future<String>> results = new ArrayList<>();
+
+            for (int i = 1; i <= 20; i++) {
+
+                int taskId = i;
+
+                Future<String> future =
+                        virtualExecutor.submit(() -> {
+
+                            simulateTask(
+                                    "Virtual Task " + taskId
+                            );
+
+                            return "Virtual Task " + taskId +
+                                    " completed by " +
+                                    Thread.currentThread();
+                        });
+
+                results.add(future);
+            }
+
+            for (Future<String> result : results) {
+                System.out.println(result.get());
+            }
+        }
+
+
+        // --------------------------------------------------
+        // 4. Creating virtual threads directly
+        // --------------------------------------------------
+
+        System.out.println("\n=== DIRECT VIRTUAL THREAD ===");
+
+        Thread virtualThread = Thread.startVirtualThread(() -> {
+
+            System.out.println(
+                    "Running inside: " +
+                            Thread.currentThread()
+            );
+
+        });
+
+        virtualThread.join();
+
+
+        // --------------------------------------------------
+        // 5. CompletableFuture
+        // --------------------------------------------------
+
+        System.out.println("\n=== COMPLETABLE FUTURE ===");
+
+        CompletableFuture<String> user =
+                CompletableFuture.supplyAsync(() -> {
+
+                    simulateTask("Loading user");
+
+                    return "Daniel";
+
+                });
+
+        CompletableFuture<String> orders =
+                CompletableFuture.supplyAsync(() -> {
+
+                    simulateTask("Loading orders");
+
+                    return "5 orders";
+
+                });
+
+        CompletableFuture<String> result =
+                user.thenCombine(
+                        orders,
+                        (username, orderCount) ->
+                                username + " has " + orderCount
+                );
+
+        System.out.println(result.get());
+
+
+        // --------------------------------------------------
+        // 6. Concurrent tasks with virtual threads
+        // --------------------------------------------------
+
+        System.out.println("\n=== CONCURRENT API-STYLE TASKS ===");
+
+        try (ExecutorService executor =
+                     Executors.newVirtualThreadPerTaskExecutor()) {
+
+            Future<String> database =
+                    executor.submit(() -> {
+
+                        simulateTask("Database query");
+
+                        return "Database: User data";
+
+                    });
+
+            Future<String> externalApi =
+                    executor.submit(() -> {
+
+                        simulateTask("External API");
+
+                        return "API: Payment data";
+
+                    });
+
+            Future<String> cache =
+                    executor.submit(() -> {
+
+                        simulateTask("Redis cache");
+
+                        return "Cache: Session data";
+
+                    });
+
+            System.out.println(database.get());
+            System.out.println(externalApi.get());
+            System.out.println(cache.get());
+        }
+
+        System.out.println("\nProgram finished.");
+    }
+
+
+    // --------------------------------------------------
+    // Simulates I/O-bound work
+    // --------------------------------------------------
+
+    static void simulateTask(String taskName) {
+
+        try {
+
+            System.out.println(
+                    taskName +
+                            " started on " +
+                            Thread.currentThread()
+            );
+
+            Thread.sleep(1000);
+
+            System.out.println(
+                    taskName +
+                            " finished"
+            );
+
+        } catch (InterruptedException e) {
+
+            Thread.currentThread().interrupt();
+
+            System.err.println(
+                    taskName + " was interrupted"
+            );
+        }
+    }
+}
