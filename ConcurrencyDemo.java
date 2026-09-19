@@ -4,39 +4,32 @@ import java.util.concurrent.*;
 
 public class ConcurrencyDemo {
 
+    public static void main(String[] args) throws Exception {
 
+        System.out.println("Java version: " +
+                System.getProperty("java.version"));
 
         // --------------------------------------------------
-        // 2. ExecutorService with platform threads
+        // 1. Basic platform threads
         // --------------------------------------------------
 
-        System.out.println("\n=== FIXED THREAD POOL ===");
+        System.out.println("\n=== PLATFORM THREADS ===");
 
-        try (ExecutorService executor =
-                     Executors.newFixedThreadPool(4)) {
+        Thread thread1 = new Thread(() -> {
+            simulateTask("Platform Thread 1");
+        });
 
-            List<Future<String>> results = new ArrayList<>();
+        Thread thread2 = new Thread(() -> {
+            simulateTask("Platform Thread 2");
+        });
 
-            for (int i = 1; i <= 8; i++) {
+        thread1.start();
+        thread2.start();
 
-                int taskId = i;
+        thread1.join();
+        thread2.join();
 
-                Future<String> future = executor.submit(() -> {
 
-                    simulateTask("Task " + taskId);
-
-                    return "Task " + taskId +
-                            " completed by " +
-                            Thread.currentThread();
-                });
-
-                results.add(future);
-            }
-
-            for (Future<String> result : results) {
-                System.out.println(result.get());
-            }
-        }
 
 
         // --------------------------------------------------
