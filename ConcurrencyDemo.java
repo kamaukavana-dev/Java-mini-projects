@@ -30,34 +30,29 @@ public class ConcurrencyDemo {
         thread2.join();
 
 
-
-
         // --------------------------------------------------
-        // 3. Virtual threads
+        // 2. ExecutorService with platform threads
         // --------------------------------------------------
 
-        System.out.println("\n=== VIRTUAL THREADS ===");
+        System.out.println("\n=== FIXED THREAD POOL ===");
 
-        try (ExecutorService virtualExecutor =
-                     Executors.newVirtualThreadPerTaskExecutor()) {
+        try (ExecutorService executor =
+                     Executors.newFixedThreadPool(4)) {
 
             List<Future<String>> results = new ArrayList<>();
 
-            for (int i = 1; i <= 20; i++) {
+            for (int i = 1; i <= 8; i++) {
 
                 int taskId = i;
 
-                Future<String> future =
-                        virtualExecutor.submit(() -> {
+                Future<String> future = executor.submit(() -> {
 
-                            simulateTask(
-                                    "Virtual Task " + taskId
-                            );
+                    simulateTask("Task " + taskId);
 
-                            return "Virtual Task " + taskId +
-                                    " completed by " +
-                                    Thread.currentThread();
-                        });
+                    return "Task " + taskId +
+                            " completed by " +
+                            Thread.currentThread();
+                });
 
                 results.add(future);
             }
@@ -66,6 +61,8 @@ public class ConcurrencyDemo {
                 System.out.println(result.get());
             }
         }
+
+
 
 
         // --------------------------------------------------
