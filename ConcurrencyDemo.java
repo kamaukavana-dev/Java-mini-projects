@@ -151,6 +151,79 @@ public class ConcurrencyDemo {
         System.out.println(result.get());
 
 
+        // --------------------------------------------------
+        // 6. Concurrent tasks with virtual threads
+        // --------------------------------------------------
+
+        System.out.println("\n=== CONCURRENT API-STYLE TASKS ===");
+
+        try (ExecutorService executor =
+                     Executors.newVirtualThreadPerTaskExecutor()) {
+
+            Future<String> database =
+                    executor.submit(() -> {
+
+                        simulateTask("Database query");
+
+                        return "Database: User data";
+
+                    });
+
+            Future<String> externalApi =
+                    executor.submit(() -> {
+
+                        simulateTask("External API");
+
+                        return "API: Payment data";
+
+                    });
+
+            Future<String> cache =
+                    executor.submit(() -> {
+
+                        simulateTask("Redis cache");
+
+                        return "Cache: Session data";
+
+                    });
+
+            System.out.println(database.get());
+            System.out.println(externalApi.get());
+            System.out.println(cache.get());
+        }
+
+        System.out.println("\nProgram finished.");
+    }
 
 
+    // --------------------------------------------------
+    // Simulates I/O-bound work
+    // --------------------------------------------------
 
+    static void simulateTask(String taskName) {
+
+        try {
+
+            System.out.println(
+                    taskName +
+                            " started on " +
+                            Thread.currentThread()
+            );
+
+            Thread.sleep(1000);
+
+            System.out.println(
+                    taskName +
+                            " finished"
+            );
+
+        } catch (InterruptedException e) {
+
+            Thread.currentThread().interrupt();
+
+            System.err.println(
+                    taskName + " was interrupted"
+            );
+        }
+    }
+}
