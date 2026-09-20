@@ -151,48 +151,6 @@ public class ConcurrencyDemo {
         System.out.println(result.get());
 
 
-        // --------------------------------------------------
-        // 6. Concurrent tasks with virtual threads
-        // --------------------------------------------------
 
-        System.out.println("\n=== CONCURRENT API-STYLE TASKS ===");
-
-        try (ExecutorService executor =
-                     Executors.newVirtualThreadPerTaskExecutor()) {
-
-            Future<String> database =
-                    executor.submit(() -> {
-
-                        simulateTask("Database query");
-
-                        return "Database: User data";
-
-                    });
-
-            Future<String> externalApi =
-                    executor.submit(() -> {
-
-                        simulateTask("External API");
-
-                        return "API: Payment data";
-
-                    });
-
-            Future<String> cache =
-                    executor.submit(() -> {
-
-                        simulateTask("Redis cache");
-
-                        return "Cache: Session data";
-
-                    });
-
-            System.out.println(database.get());
-            System.out.println(externalApi.get());
-            System.out.println(cache.get());
-        }
-
-        System.out.println("\nProgram finished.");
-    }
 
 
