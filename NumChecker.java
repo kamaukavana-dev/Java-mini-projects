@@ -44,11 +44,4 @@ public class NumChecker {
         average = (float)sum/arr.length;
 
         // Call method to find largest or smallest number or the sum and the average
-        System.out.println("The largest number is = " + largeNum(arr));
-        System.out.println("The smallest number is = " + smallNum(arr));
-        System.out.println("The sum of all the numbers is = "+ sum);
-        System.out.println("The average of all the numbers is = "+ average);
 
-        scanner.close();
-    }
-}
