@@ -35,13 +35,5 @@ public class NumChecker {
         int sum = 0;
         float average;
 
-        // Fill array with user input
-        System.out.println("Enter " + size + " numbers: ");
-        for (int i = 0; i < size; i++) {
-            arr[i] = scanner.nextInt();
-            sum = sum + arr[i];
-        }         //convert sum and array_length to float
-        average = (float)sum/arr.length;
 
-        // Call method to find largest or smallest number or the sum and the average
 
