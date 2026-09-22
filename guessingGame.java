@@ -30,6 +30,8 @@ public class guessingGame {
                     System.out.println("You are nearly there...");
                 } else if (num > lucky_num) {
                     System.out.println("Your number was too high!!!");
+                } else if (num < lucky_num) {
+                        System.out.println("Your number was too Low!!!");
                 } else {
                     System.out.println("Your number was too low!!");
                 }
