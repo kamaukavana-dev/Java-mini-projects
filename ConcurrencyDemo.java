@@ -196,34 +196,3 @@ public class ConcurrencyDemo {
     }
 
 
-    // --------------------------------------------------
-    // Simulates I/O-bound work
-    // --------------------------------------------------
-
-    static void simulateTask(String taskName) {
-
-        try {
-
-            System.out.println(
-                    taskName +
-                            " started on " +
-                            Thread.currentThread()
-            );
-
-            Thread.sleep(1000);
-
-            System.out.println(
-                    taskName +
-                            " finished"
-            );
-
-        } catch (InterruptedException e) {
-
-            Thread.currentThread().interrupt();
-
-            System.err.println(
-                    taskName + " was interrupted"
-            );
-        }
-    }
-}
