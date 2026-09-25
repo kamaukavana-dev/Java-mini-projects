@@ -1,5 +1,6 @@
 public class Dante1 {
-    public static void main(String[] args){
-        System.out.println("Hello there");
-    }
+    // With new
+    String[] cars = new String[] {"Volvo", "BMW", "Ford", "Mazda"};
+
+
 }
