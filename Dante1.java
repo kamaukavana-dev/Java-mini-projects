@@ -12,11 +12,7 @@ public class Dante1 {
         return max;
             Scanner scanner = new Scanner(System.in);
 
-            // Ask user for array size
-            System.out.print("Enter the size of your array: ");
-            int size = scanner.nextInt();
-            if (size <= 0) { System.out.println("Array size must be greater than 0.");
-                return; }
+
 
 
 
