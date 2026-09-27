@@ -18,12 +18,7 @@ public class Dante1 {
             if (size <= 0) { System.out.println("Array size must be greater than 0.");
                 return; }
 
-            // Create array with that size
-            int[] arr = new int[size];
-            int sum = 0;
-            float average;
 
-;
 
 
 
