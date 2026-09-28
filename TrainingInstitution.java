@@ -85,40 +85,7 @@ public class TrainingInstitution {
     }
 
     // ---------- Features ----------
-    static void register() {
-        if (count == MAX_TRAINEES) {                          // guard: array is full
-            System.out.println("Class is full (" + MAX_TRAINEES + " trainees).");
-            return;
-        }
-        String name;
-        do {
-            System.out.print("Trainee name: ");
-            name = sc.nextLine().trim();
-        } while (name.isEmpty());
 
-        names[count] = name;
-        for (int u = 0; u < UNITS.length; u++) {              // for: known number of units
-            marks[count][u] = readInt("  " + UNITS[u] + " mark (0-100): ", 0, 100);
-        }
-        count++;
-        System.out.println("Registered " + name + ".");
-    }
-
-    static double average(int trainee) {
-        int sum = 0;
-        for (int m : marks[trainee]) {                        // enhanced for: read every element
-            sum += m;
-        }
-        return (double) sum / UNITS.length;                   // cast avoids integer division
-    }
-
-    static String grade(double avg) {
-        if (avg >= 70)      return "A";                       // if-else chain: ranges
-        else if (avg >= 60) return "B";
-        else if (avg >= 50) return "C";
-        else if (avg >= 40) return "D";
-        else                return "E";
-    }
 
 
 
