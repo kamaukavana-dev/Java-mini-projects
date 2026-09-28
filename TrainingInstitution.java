@@ -171,9 +171,4 @@ public class TrainingInstitution {
         if (!found) System.out.println("Trainee not found.");
     }
 
-    static void ranking() {
-        if (count == 0) {
-            System.out.println("No data.");
-            return;
-        }
-        // Sort an index array instead of the data, so names[] and marks[] stay aligned.
+
