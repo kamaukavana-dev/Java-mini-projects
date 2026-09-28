@@ -70,21 +70,8 @@ public class TrainingInstitution {
     }
 
     // ---------- Input with validation ----------
-    static int readInt(String prompt, int min, int max) {
-        while (true) {                                        // while: repeat until valid
-            System.out.print(prompt);
-            String line = sc.nextLine().trim();
-            try {
-                int value = Integer.parseInt(line);
-                if (value >= min && value <= max) return value;
-            } catch (NumberFormatException e) {
-                // fall through to the error message
-            }
-            System.out.println("Enter a whole number between " + min + " and " + max + ".");
-        }
-    }
 
-    // ---------- Features ----------
+
 
 
 
