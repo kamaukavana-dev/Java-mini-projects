@@ -156,19 +156,6 @@ public class TrainingInstitution {
         }
     }
 
-    static void search() {
-        System.out.print("Name to find: ");
-        String key = sc.nextLine().trim();
-        boolean found = false;
-        for (int i = 0; i < count; i++) {
-            if (names[i].equalsIgnoreCase(key)) {             // equalsIgnoreCase, never ==
-                double avg = average(i);
-                System.out.printf("%s | average %.1f | grade %s%n", names[i], avg, grade(avg));
-                found = true;
-                break;                                        // break: stop once found
-            }
-        }
-        if (!found) System.out.println("Trainee not found.");
-    }
+
 
 
