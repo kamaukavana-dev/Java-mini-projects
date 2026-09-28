@@ -120,22 +120,7 @@ public class TrainingInstitution {
         else                return "E";
     }
 
-    static void viewAll() {
-        if (count == 0) {
-            System.out.println("No trainees registered yet.");
-            return;
-        }
-        System.out.printf("%-12s", "NAME");
-        for (String u : UNITS) System.out.printf("%-12s", u);
-        System.out.printf("%-8s%s%n", "AVG", "GRADE");
 
-        for (int i = 0; i < count; i++) {
-            System.out.printf("%-12s", names[i]);
-            for (int m : marks[i]) System.out.printf("%-12d", m);
-            double avg = average(i);
-            System.out.printf("%-8.1f%s%n", avg, grade(avg));
-        }
-    }
 
 
 
