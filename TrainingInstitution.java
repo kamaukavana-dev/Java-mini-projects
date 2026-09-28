@@ -50,26 +50,7 @@ public class TrainingInstitution {
         } while (choice != 6);
     }
 
-    // ---------- Display ----------
-    static void printBanner() {
-        System.out.println("University : " + UNIVERSITY);
-        System.out.println("Course     : " + COURSE);
-        System.out.println("Reg. No.   : " + REG_NO);
-        System.out.println("Unit       : " + UNIT);
-        System.out.println("Year       : " + YEAR);
-    }
 
-    static void printMenu() {
-        System.out.println("\n=== TRAINING INSTITUTION MENU ===");
-        System.out.println("1. Register trainee");
-        System.out.println("2. View all trainees");
-        System.out.println("3. Unit statistics");
-        System.out.println("4. Search trainee");
-        System.out.println("5. Ranking (best to worst)");
-        System.out.println("6. Exit");
-    }
-
-    // ---------- Input with validation ----------
 
 
 
