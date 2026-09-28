@@ -25,30 +25,7 @@ public class TrainingInstitution {
     static final String YEAR       = "YEAR 1 SEMESTER TWO";
 
     // ---- Data (arrays) ----
-    static final int MAX_TRAINEES = 5;                        // arrays have fixed size
-    static final String[] UNITS = {"Java", "Databases", "Networking"};
-    static String[] names = new String[MAX_TRAINEES];         // 1D array: trainee names
-    static int[][] marks = new int[MAX_TRAINEES][UNITS.length]; // 2D array: [trainee][unit]
-    static int count = 0;                                     // number of trainees registered
 
-    static final Scanner sc = new Scanner(System.in);
-
-    public static void main(String[] args) {
-        printBanner();
-        int choice;
-        do {                                                  // do-while: menu runs at least once
-            printMenu();
-            choice = readInt("Choice: ", 1, 6);
-            switch (choice) {                                 // switch: discrete menu options
-                case 1 -> register();
-                case 2 -> viewAll();
-                case 3 -> unitStatistics();
-                case 4 -> search();
-                case 5 -> ranking();
-                case 6 -> System.out.println("Goodbye.");
-            }
-        } while (choice != 6);
-    }
 
 
 
