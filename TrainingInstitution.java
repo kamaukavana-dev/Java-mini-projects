@@ -137,24 +137,7 @@ public class TrainingInstitution {
         }
     }
 
-    static void unitStatistics() {
-        if (count == 0) {
-            System.out.println("No data.");
-            return;
-        }
-        for (int u = 0; u < UNITS.length; u++) {
-            int sum = 0, high = marks[0][u], low = marks[0][u], passed = 0;
-            for (int i = 0; i < count; i++) {
-                int m = marks[i][u];
-                sum += m;
-                if (m > high) high = m;
-                if (m < low)  low = m;
-                if (m >= 50)  passed++;
-            }
-            System.out.printf("%-11s avg %.1f | high %d | low %d | passed %d/%d%n",
-                    UNITS[u], (double) sum / count, high, low, passed, count);
-        }
-    }
+
 
 
 
