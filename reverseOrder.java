@@ -7,8 +7,8 @@ public class reverseOrder {
 
         int[] myArray = new int[n];
         System.out.print("Enter "+n+" elements: ");
-        for(int i=0;i<n;i++){
-            myArray[i] = sc.nextInt();
+        for(int m=0;m<n;m++){
+            myArray[m] = sc.nextInt();
         }
         System.out.println("REVERSED ARRAY ELEMENT");
         // Start from the last index (length - 1) down to 0
